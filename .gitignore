@@ -1,0 +1,73 @@
+﻿# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.*
+env_production
+env_vps_full.txt
+
+# Large files
+*.zip
+front_pack.zip
+back_pack.zip
+dist.zip
+
+# Sensitive scripts
+fix_google.sh
+
+# Certificates and keys
+certificadogse2025/
+*.p12
+*.key
+*.crt
+
+
+@"
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.*
+env_production
+env_vps_full.txt
+
+# Large files
+*.zip
+front_pack.zip
+back_pack.zip
+dist.zip
+
+# Sensitive scripts
+fix_google.sh
+
+# Certificates and keys
+certificadogse2025/
+*.p12
+*.key
+*.crt
+*.csr
+
+# Database backups
+*.sql
+
+# VPS/Deploy scripts with potential secrets
+*vps*.ps1
+*vps*.sh
+*vps*.bat
+deploy*.sh
+upload*.ps1
+connect*.ps1
+backup*.ps1
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+*.log
+
+# React-TS template (if not needed)
+React-TS/

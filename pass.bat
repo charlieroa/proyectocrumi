@@ -1,0 +1,2 @@
+@echo off
+echo 62dd33d6347d132ab70ed7a53b944d2a134ac1a27f5f79ad30ce37eef71f7a2c

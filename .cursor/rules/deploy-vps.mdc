@@ -1,0 +1,24 @@
+---
+description: Flujo de cambios Crumi - ejecutar local y subir al VPS
+alwaysApply: true
+---
+
+# Despliegue Crumi (local → VPS)
+
+Cuando el usuario pida cambios en el proyecto Crumi:
+
+1. **Ejecutar local primero**: aplicar los cambios en el código local (front/back).
+2. **Subir al VPS**: después de que los cambios estén hechos y validados (lint/build si aplica), subir los archivos modificados al VPS y ejecutar build/reinicio según corresponda.
+
+## VPS Crumi (solo 1 front + 1 back)
+
+- **Frontend:** `/var/www/frontend` — nginx sirve `build/`. Subir archivos con pscp, luego `npm run build` en esa ruta.
+- **Backend:** `/var/www/backend` — PM2 proceso `backend`. Subir archivos, luego `pm2 restart backend`.
+- **Conexión:** plink/pscp a `root@38.242.209.6` (o credenciales que use el proyecto).
+
+## Scripts útiles
+
+- `upload_ui_changes_vps.ps1` — sube archivos de frontend y ejecuta build.
+- Ajustar la lista de archivos en el script si se modifican otros ficheros.
+
+Siempre que el usuario pida algo que implique cambios desplegables: hacer los cambios locales, verificar, y luego subir/ejecutar en el VPS.
