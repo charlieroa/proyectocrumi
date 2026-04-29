@@ -1,0 +1,58 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------------< com.crumi:dian-soap-client >---------------------
+[INFO] Building dian-soap-client 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ dian-soap-client ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\proyectos\crumi\back\src\main\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ dian-soap-client ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 63 source files to C:\proyectos\crumi\back\target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[7,34] package org.apache.cxf.ext.logging does not exist
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[153,42] cannot find symbol
+  symbol:   class SOAPHeader
+  location: class com.crumi.dian.DianClient
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[67,13] cannot find symbol
+  symbol:   class LoggingFeature
+  location: class com.crumi.dian.DianClient
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[67,42] cannot find symbol
+  symbol:   class LoggingFeature
+  location: class com.crumi.dian.DianClient
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[114,13] cannot find symbol
+  symbol:   class SOAPHeader
+  location: class com.crumi.dian.DianClient
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.602 s
+[INFO] Finished at: 2025-12-27T12:32:55-05:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile (default-compile) on project dian-soap-client: Compilation failure: Compilation failure: 
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[7,34] package org.apache.cxf.ext.logging does not exist
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[153,42] cannot find symbol
+[ERROR]   symbol:   class SOAPHeader
+[ERROR]   location: class com.crumi.dian.DianClient
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[67,13] cannot find symbol
+[ERROR]   symbol:   class LoggingFeature
+[ERROR]   location: class com.crumi.dian.DianClient
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[67,42] cannot find symbol
+[ERROR]   symbol:   class LoggingFeature
+[ERROR]   location: class com.crumi.dian.DianClient
+[ERROR] /C:/proyectos/crumi/back/src/main/java/com/crumi/dian/DianClient.java:[114,13] cannot find symbol
+[ERROR]   symbol:   class SOAPHeader
+[ERROR]   location: class com.crumi.dian.DianClient
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

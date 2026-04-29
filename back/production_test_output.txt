@@ -1,0 +1,32 @@
+﻿[dotenv@17.2.0] injecting env (10) from .env (tip: ­ƒöÉ encrypt with dotenvx: https://dotenvx.com)
+[dotenv@17.2.0] injecting env (0) from .env (tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' })
+========================================
+­ƒö┤ MODO PRODUCCI├ôN - FACTURAS REALES
+========================================
+Ambiente: 1
+Resoluci├│n: 18764101789329
+Prefijo: FE
+Endpoint: https://vpfe.dian.gov.co/WcfDianCustomerServices.svc
+========================================
+
+­ƒö┤ ENVIANDO FACTURA DE PRODUCCI├ôN...
+
+­ƒôä Factura: FE1
+­ƒöÉ Cadena CUFE: FE12026-01-0109:05:41-05:001000.0001190.00040.00030.001190.00902006720222222222222fc8eac422eba16e22ffd8c6f94b3f40a6e38162c1
+­ƒöÉ CUFE: dd6c2467c62a1d445a1fcdf5551618faa7bfa523e1c871534b6059fe0d8167f070dfe8e78be137697a29a9c9a3b06208
+­ƒöÅ Iniciando firma XAdES-EPES con Java xades4j...
+   ­ƒôä XML temporal: C:\proyectos\crumi\back\public\uploads\xmls\temp_input_1767276341237.xml
+   Ôÿò Ejecutando firmador Java...
+   Ô£à XML firmado correctamente con xades4j
+
+­ƒô¿ RESPUESTA DIAN:
+{
+  "success": true,
+  "message": "",
+  "zipKey": "0d85d26c-bd81-45f8-8ea9-63033cfab0ba",
+  "documentKey": "0d85d26c-bd81-45f8-8ea9-63033cfab0ba",
+  "rawXml": "<SendBillAsyncResponse xmlns=\"http://wcf.dian.colombia\"><SendBillAsyncResult xmlns:b=\"http://schemas.datacontract.org/2004/07/UploadDocumentResponse\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><b:ErrorMessageList i:nil=\"true\" xmlns:c=\"http://schemas.datacontract.org/2004/07/XmlParamsResponseTrackId\" /><b:ZipKey>0d85d26c-bd81-45f8-8ea9-63033cfab0ba</b:ZipKey></SendBillAsyncResult></SendBillAsyncResponse>"
+}
+
+Ô£à FACTURA ENVIADA EXITOSAMENTE
+   ZipKey: 0d85d26c-bd81-45f8-8ea9-63033cfab0ba

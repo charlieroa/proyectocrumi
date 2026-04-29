@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "dianResponse": {
+    "SendTestSetAsyncResult": {
+      "ErrorMessageList": [],
+      "ZipKey": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a",
+      "TrackId": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a",
+      "IsValid": true,
+      "StatusMessage": "",
+      "XmlDocumentKey": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a"
+    },
+    "SendBillAsyncResult": {
+      "ErrorMessageList": [],
+      "ZipKey": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a",
+      "TrackId": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a",
+      "IsValid": true,
+      "StatusMessage": "",
+      "XmlDocumentKey": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a"
+    }
+  },
+  "cufe": "d951e7620c3fb71226775239b688094c147fbfe21351fc55e4805b55b16768d47a223fef529a1c38ed0901126847fa1a",
+  "invoiceNumber": "FE084351",
+  "trackId": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a",
+  "zipKey": "2a375f01-5e27-4dbb-b5c4-357c60c6ca3a",
+  "xmlPath": ""
+}

@@ -1,0 +1,7 @@
+{
+  "success": false,
+  "message": " (StatusCode: 66)",
+  "zipKey": "",
+  "documentKey": "",
+  "rawXml": "<GetStatusResponse xmlns=\"http://wcf.dian.colombia\"><GetStatusResult xmlns:b=\"http://schemas.datacontract.org/2004/07/DianResponse\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><b:ErrorMessage xmlns:c=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\" /><b:IsValid>false</b:IsValid><b:StatusCode>66</b:StatusCode><b:StatusDescription>TrackId no existe en los registros de la DIAN.</b:StatusDescription><b:StatusMessage i:nil=\"true\" /><b:XmlBase64Bytes i:nil=\"true\" /><b:XmlBytes i:nil=\"true\" /><b:XmlDocumentKey i:nil=\"true\" /><b:XmlFileName i:nil=\"true\" /></GetStatusResult></GetStatusResponse>"
+}

@@ -1,0 +1,19 @@
+
+KEY: 85cfe5435c77853e84caaa79e14216a9c68c21
+CUFEDATA: {
+  "invoiceNumber": "SET1005",
+  "date": "2026-01-04",
+  "time": "10:25:40-05:00",
+  "subtotal": 1000,
+  "taxAmount1": 190,
+  "taxAmount2": 0,
+  "taxAmount3": 0,
+  "total": 1190,
+  "nitEmisor": "902006720",
+  "tipoDocAdquiriente": "222222222222",
+  "numDocAdquiriente": "222222222222",
+  "claveTecnica": "85cfe5435c77853e84caaa79e14216a9c68c21",
+  "tipoAmbiente": "1"
+}
+CUFE_HASH: 27f7c6c170878c1b4fc1edd5bd74ca182f86b694d1acd050e468c6c3a645dcfe5c2bfab3feb3bebf0f1d57db40f9b4a9
+    

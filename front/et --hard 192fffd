@@ -1,0 +1,13 @@
+[33md34f1bc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: checkout: moving from 192fffd93c4469f83f0625282b2b803bd7bcb5bf to main
+[33m192fffd[m HEAD@{1}: commit: digiturno completo con select de estilista
+[33m31089bd[m HEAD@{2}: reset: moving to HEAD@{1}
+[33m5a1c009[m HEAD@{3}: commit: ajustes por fin turnero y agendamiento
+[33m31089bd[m HEAD@{4}: commit: ahora tengo multiple servicio con digiturno
+[33mfe22f5c[m HEAD@{5}: commit: ajustes de agendamiento multiple
+[33m49fabb4[m[33m ([m[1;31morigin/nueva-rama[m[33m, [m[1;32mnueva-rama[m[33m)[m HEAD@{6}: checkout: moving from nueva-rama to 49fabb442ffbc466494c2dc8e07fd18579cc3fd4
+[33m49fabb4[m[33m ([m[1;31morigin/nueva-rama[m[33m, [m[1;32mnueva-rama[m[33m)[m HEAD@{7}: checkout: moving from 49fabb442ffbc466494c2dc8e07fd18579cc3fd4 to nueva-rama
+[33m49fabb4[m[33m ([m[1;31morigin/nueva-rama[m[33m, [m[1;32mnueva-rama[m[33m)[m HEAD@{8}: commit: servicios y estilistas
+[33md34f1bc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{9}: checkout: moving from main to d34f1bc0648925c280d59ffc43a800bc7e4973ae
+[33md34f1bc[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{10}: commit: ajustes hasta caja
+[33mfd05242[m HEAD@{11}: commit: ajuste login-backend
+[33m307e62b[m HEAD@{12}: commit (initial): primer commit

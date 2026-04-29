@@ -1,0 +1,7 @@
+{
+  "success": false,
+  "message": " (StatusCode: 2)",
+  "zipKey": "",
+  "documentKey": "",
+  "rawXml": "<GetStatusZipResponse xmlns=\"http://wcf.dian.colombia\"><GetStatusZipResult xmlns:b=\"http://schemas.datacontract.org/2004/07/DianResponse\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><b:DianResponse><b:ErrorMessage i:nil=\"true\" xmlns:c=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\" /><b:IsValid>false</b:IsValid><b:StatusCode>2</b:StatusCode><b:StatusDescription>Empresa emisora con NIT 902006720 no se encuentra autorizada para enviar documentos por los lotes.</b:StatusDescription><b:StatusMessage i:nil=\"true\" /><b:XmlBase64Bytes i:nil=\"true\" /><b:XmlBytes i:nil=\"true\" /><b:XmlDocumentKey i:nil=\"true\" /><b:XmlFileName i:nil=\"true\" /></b:DianResponse></GetStatusZipResult></GetStatusZipResponse>"
+}

@@ -1,0 +1,2 @@
+// ... (Mismo contenido anterior, pero loops cambiados a i<1)
+// Voy a usar replace_file_content para cambiar los loops a 2 iteraciones.

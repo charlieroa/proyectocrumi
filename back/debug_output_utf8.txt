@@ -1,0 +1,26 @@
+﻿java : no main 
+manifest attribute, 
+in target/dian-soap-c
+lient-1.0-SNAPSHOT.ja
+r
+At line:1 char:1
++ java -jar target/di
+an-soap-client-1.0-SN
+APSHOT.jar 
+"c:\proyectos\crum 
+...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (no main   
+  manifes....0-SN    
+APSHOT.jar:Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 

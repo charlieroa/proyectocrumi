@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "message": "",
+  "zipKey": "bcb11e36-e4f3-4f6a-aaf3-9932ca0140f0",
+  "documentKey": "bcb11e36-e4f3-4f6a-aaf3-9932ca0140f0",
+  "rawXml": "<SendTestSetAsyncResponse xmlns=\"http://wcf.dian.colombia\"><SendTestSetAsyncResult xmlns:b=\"http://schemas.datacontract.org/2004/07/UploadDocumentResponse\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><b:ErrorMessageList i:nil=\"true\" xmlns:c=\"http://schemas.datacontract.org/2004/07/XmlParamsResponseTrackId\" /><b:ZipKey>bcb11e36-e4f3-4f6a-aaf3-9932ca0140f0</b:ZipKey></SendTestSetAsyncResult></SendTestSetAsyncResponse>"
+}

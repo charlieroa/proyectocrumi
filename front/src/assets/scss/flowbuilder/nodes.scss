@@ -1,0 +1,212 @@
+// ===============================================================
+// Estilos SOLO para los Nodos Personalizados
+// ===============================================================
+.whatsapp-node,
+.text-node,
+.options-node,
+.media-node {
+  background: white;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 200px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  position: relative;
+
+  &:hover {
+    border-color: #5e72e4;
+    box-shadow: 0 4px 12px rgba(94, 114, 228, 0.2);
+    transform: translateY(-2px);
+
+    .node-delete-btn {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  // Botón de eliminar del nodo
+  .node-delete-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 10;
+    padding: 0;
+
+    &:hover {
+      background: #fee;
+      border-color: #f56565;
+      transform: scale(1.15);
+
+      svg {
+        color: #f56565;
+      }
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    svg {
+      color: #a0aec0;
+      transition: color 0.2s ease;
+    }
+  }
+
+  .node-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .node-icon-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+
+    &.whatsapp {
+      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+      color: white;
+    }
+
+    &.text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    &.options {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    &.media {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+  }
+
+  .node-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+
+    strong {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+      line-height: 1.2;
+    }
+
+    small {
+      font-size: 12px;
+      color: #718096;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 150px;
+    }
+  }
+
+  // Handles de conexión
+  .handle {
+    width: 10px;
+    height: 10px;
+    background: #5e72e4;
+    border: 2px solid white;
+    transition: all 0.2s ease;
+
+    &:hover {
+      width: 14px;
+      height: 14px;
+      background: #4c5fd5;
+    }
+  }
+}
+
+// ===============================================================
+// Estado seleccionado
+// ===============================================================
+.react-flow__node.selected {
+  .whatsapp-node,
+  .text-node,
+  .options-node,
+  .media-node {
+    border-color: #5e72e4;
+    box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.2);
+
+    .node-delete-btn {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+// ===============================================================
+// Animación de las líneas de conexión
+// ===============================================================
+.react-flow__edge.animated path {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+@keyframes dashdraw {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+// ===============================================================
+// Botón de eliminar en el edge (línea de conexión)
+// ===============================================================
+.edge-button-container {
+  pointer-events: all;
+  
+  .edge-button-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #fee;
+      border-color: #f56565;
+      transform: scale(1.2);
+
+      .edge-delete-icon {
+        color: #f56565;
+      }
+    }
+
+    &:active {
+      transform: scale(1.05);
+    }
+
+    .edge-delete-icon {
+      color: #a0aec0;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+  }
+}

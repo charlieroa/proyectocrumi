@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "message": "Enviado a DIAN",
+  "invoiceNumber": 990004176,
+  "cufe": "1e17f539-3114-473f-800e-f36934cdb8d1",
+  "trackId": "1e17f539-3114-473f-800e-f36934cdb8d1",
+  "xmlPath": "N/A",
+  "dianResponse": {
+    "success": true,
+    "dianResponse": {
+      "SendTestSetAsyncResult": {
+        "ErrorMessageList": [],
+        "ZipKey": "1e17f539-3114-473f-800e-f36934cdb8d1",
+        "TrackId": "1e17f539-3114-473f-800e-f36934cdb8d1",
+        "IsValid": true,
+        "StatusMessage": "",
+        "XmlDocumentKey": "1e17f539-3114-473f-800e-f36934cdb8d1"
+      },
+      "SendBillAsyncResult": {
+        "ErrorMessageList": [],
+        "ZipKey": "1e17f539-3114-473f-800e-f36934cdb8d1",
+        "TrackId": "1e17f539-3114-473f-800e-f36934cdb8d1",
+        "IsValid": true,
+        "StatusMessage": "",
+        "XmlDocumentKey": "1e17f539-3114-473f-800e-f36934cdb8d1"
+      }
+    },
+    "cufe": "6b5694ae9291f7a40d225a09170ed1f36eba48c891383b62c67268b9a4e1335d20707c6115fef57ccb746cd7e06209fc",
+    "invoiceNumber": "SETP990004176",
+    "xmlPath": "N/A"
+  }
+}

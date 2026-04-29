@@ -1,0 +1,24 @@
+{
+  "dianResponse": {
+    "SendTestSetAsyncResult": {
+      "ErrorMessageList": [
+        " (StatusCode: 66)"
+      ],
+      "ZipKey": "",
+      "TrackId": "",
+      "IsValid": false,
+      "StatusMessage": " (StatusCode: 66)",
+      "XmlDocumentKey": ""
+    },
+    "SendBillAsyncResult": {
+      "ErrorMessageList": [
+        " (StatusCode: 66)"
+      ],
+      "ZipKey": "",
+      "TrackId": "",
+      "IsValid": false,
+      "StatusMessage": " (StatusCode: 66)",
+      "XmlDocumentKey": ""
+    }
+  }
+}

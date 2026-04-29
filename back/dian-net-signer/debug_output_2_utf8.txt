@@ -1,0 +1,31 @@
+﻿C:\proyectos\crumi\back\dian-net-signer\Program.cs(22,40): warning CS8618: Non-nullable field 'Body' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(29,19): warning CS8618: Non-nullable field 'fileName' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(42,41): warning CS8618: Non-nullable field 'Body' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(32,19): warning CS8618: Non-nullable field 'contentFile' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(35,19): warning CS8618: Non-nullable field 'testSetId' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(49,35): warning CS8618: Non-nullable field 'SendTestSetAsyncResult' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(56,19): warning CS8618: Non-nullable field 'ErrorMessageList' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(59,19): warning CS8618: Non-nullable field 'ZipKey' must contain a non-null value when exiting constructor. Consider declaring the field as nullable. [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+C:\proyectos\crumi\back\dian-net-signer\Program.cs(121,69): error CS0117: 'SecurityAlgorithmSuite' does not contain a definition for 'Basic256Sha256Rsa15' [C:\proyectos\crumi\back\dian-net-signer\dian-net-signer.csproj]
+dotnet : 
+At line:1 char:1
++ dotnet run "c:\proy
+ectos\crumi\back\cert
+ificados\certificado_
+cliente. ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (:String   
+ ) [], RemoteExce    
+ption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+The build failed. 
+Fix the build errors 
+and run again.

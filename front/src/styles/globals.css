@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* --- Landing fonts (Plus Jakarta Sans display + Geist body) --- */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Custom Properties */
+:root {
+  --crumi-primary: #1A1D1F;
+  --crumi-primary-hover: #111315;
+  --crumi-accent: #8B5CF6;
+  --crumi-bg: #F3F5F7;
+  --crumi-surface: #FFFFFF;
+  --crumi-text: #1A1D1F;
+  --crumi-text-muted: #6F767E;
+  --crumi-border: #EFEFEF;
+  --crumi-sidebar-width: 80px;
+  --crumi-header-height: 64px;
+  --crumi-radius: 12px;
+  --crumi-radius-lg: 24px;
+  --crumi-radius-xl: 32px;
+
+  /* ===========================================================
+     Landing / marketing design tokens (portados del escrow home).
+     Los usa únicamente `src/pages/Landing/` vía .landing-root.
+
+     Patrón shadcn estándar: canales HSL bare "H S% L%" para que
+     `hsl(var(--x) / <alpha-value>)` funcione con modificadores
+     de opacidad (`bg-brand/15`, `bg-background/85`, etc.).
+     =========================================================== */
+  --background: 45 40% 98%;
+  /* Foreground neutral — sin tinte azul. El usuario quiere negro puro
+     en el menú y textos principales, no el azul oscuro con hue 260. */
+  --foreground: 0 0% 9%;
+  --ink: 0 0% 10%;
+  --ink-foreground: 45 40% 97%;
+  --cream: 43 50% 94%;
+  --mint: 145 38% 82%;
+  --lilac: 285 30% 82%;
+  --peach: 28 58% 85%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 9%;
+  --muted: 45 25% 94%;
+  --muted-foreground: 0 0% 42%;
+  --border: 45 12% 88%;
+  /* Brand violeta vivo tirando azul — ≈ #3c2c8e pero más luminoso.
+     65% sat / 48% lightness funciona bien en acentos pequeños Y
+     en superficies grandes (CtaBanner) sin quemar la vista. */
+  --brand: 258 62% 48%;
+  --brand-foreground: 0 0% 99%;
+  --success: 150 50% 45%;
+  --success-foreground: 0 0% 99%;
+}
+
+.dark {
+  --crumi-bg: #111315;
+  --crumi-surface: #1A1D1F;
+  --crumi-text: #FCFCFC;
+  --crumi-text-muted: #9A9FA5;
+  --crumi-border: #272B30;
+
+  /* Landing tokens en dark */
+  --background: 260 15% 10%;
+  --foreground: 45 40% 97%;
+  --ink: 260 15% 6%;
+  --ink-foreground: 45 40% 97%;
+  --cream: 45 10% 20%;
+  --mint: 150 25% 28%;
+  --lilac: 285 18% 28%;
+  --peach: 28 30% 28%;
+  --card: 260 15% 18%;
+  --card-foreground: 45 40% 97%;
+  --muted: 260 10% 24%;
+  --muted-foreground: 260 8% 70%;
+  --border: 260 10% 30%;
+  --brand: 260 65% 65%;
+  --brand-foreground: 260 25% 12%;
+  --success: 150 45% 55%;
+  --success-foreground: 150 10% 12%;
+}
+
+/* Reusable Crumi component classes */
+@layer components {
+  .crumi-card {
+    @apply bg-crumi-surface-light dark:bg-crumi-surface-dark
+           rounded-3xl shadow-crumi-card;
+  }
+
+  .crumi-btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           px-5 py-2.5
+           bg-crumi-primary text-white font-semibold
+           rounded-full
+           hover:bg-crumi-primary-hover hover:shadow-crumi-lg
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .crumi-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2.5
+           bg-transparent
+           text-crumi-text-primary dark:text-crumi-text-dark-primary
+           font-medium rounded-full
+           hover:bg-crumi-bg-light dark:hover:bg-crumi-surface-dark-hover
+           transition-all duration-200;
+  }
+
+  .crumi-input {
+    @apply w-full px-4 py-2.5
+           bg-crumi-surface-light dark:bg-crumi-surface-dark
+           border border-crumi-border-light dark:border-crumi-border-dark
+           rounded-full
+           text-crumi-text-primary dark:text-crumi-text-dark-primary
+           placeholder:text-crumi-text-muted dark:placeholder:text-crumi-text-dark-muted
+           focus:outline-none focus:ring-2 focus:ring-crumi-accent/30 focus:border-crumi-accent
+           transition-all duration-200;
+  }
+
+  .crumi-pill-tab {
+    @apply px-4 py-2 rounded-full text-sm font-medium
+           text-crumi-text-muted dark:text-crumi-text-dark-muted
+           hover:bg-crumi-bg-light dark:hover:bg-crumi-surface-dark-hover
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .crumi-pill-tab-active {
+    @apply px-4 py-2 rounded-full text-sm font-medium
+           bg-crumi-primary text-white dark:bg-crumi-text-dark-primary dark:text-crumi-primary
+           shadow-crumi-card
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .crumi-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--crumi-border) transparent;
+  }
+
+  .crumi-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .crumi-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .crumi-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--crumi-border);
+    border-radius: 3px;
+  }
+
+  /* =============================================================
+     Landing root — scope tipografía de marketing a la landing
+     sin afectar el dashboard. index.tsx del landing aplica
+     className="landing-root" al wrapper raíz.
+     ============================================================= */
+  .landing-root {
+    font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .landing-root h1,
+  .landing-root h2,
+  .landing-root h3,
+  .landing-root h4,
+  .landing-root .tight-heading {
+    font-family: 'Plus Jakarta Sans', 'Geist', 'Inter', sans-serif;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+
+  .landing-root .tight-heading {
+    font-feature-settings: "ss01", "cv11";
+  }
+}
+
+/* ===================================================
+   GLOBAL BOOTSTRAP OVERRIDES (for modals and overlays
+   that render outside the ModulePageWrapper)
+   =================================================== */
+
+/* Modal overlays rendered at body level */
+#root .modal-content {
+  border-radius: 24px !important;
+  border: none !important;
+  box-shadow: 0px 24px 64px rgba(0, 0, 0, 0.12) !important;
+  overflow: hidden !important;
+}
+#root .modal-header {
+  border-bottom: 1px solid var(--crumi-border) !important;
+  padding: 1.25rem 1.5rem !important;
+}
+#root .modal-header .modal-title {
+  font-weight: 700 !important;
+}
+#root .modal-body {
+  padding: 1.5rem !important;
+}
+#root .modal-footer {
+  border-top: 1px solid var(--crumi-border) !important;
+  padding: 1rem 1.5rem !important;
+}
+#root .modal-backdrop {
+  backdrop-filter: blur(4px) !important;
+}
+
+/* SweetAlert2 overrides */
+.swal2-popup {
+  border-radius: 24px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+.swal2-confirm {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  background: #1A1D1F !important;
+  border: none !important;
+}
+.swal2-cancel {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+}
+
+/* Toastify overrides */
+.Toastify__toast {
+  border-radius: 16px !important;
+  font-family: 'Inter', sans-serif !important;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Global link reset for Crumi layout */
+#root a {
+  text-decoration: none;
+}

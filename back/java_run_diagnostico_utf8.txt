@@ -1,0 +1,598 @@
+﻿Using keystore alias: 1
+java : [main] INFO org.apa
+che.cxf.wsdl.service.facto
+ry.ReflectionServiceFactor
+yBean - Creating Service {
+http://wcf.dian.colombia}W
+cfDianCustomerServices 
+from class org.apache.cxf.
+jaxws.support.DummyImpl
+At line:1 char:77
++ ... uild_3.txt; java 
+-jar target/dian-soap-clie
+nt-1.0-SNAPSHOT.jar 
+"c:\pr ...
++                 ~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo        
+      : NotSpecified: ([  
+  main] INFO org...ppor   
+ t.DummyImpl:String) [    
+], RemoteException
+    + FullyQualifiedError 
+   Id : NativeCommandErr  
+  or
+ 
+[main] INFO org.apache.cxf
+.services.DummyImpl.REQ_OU
+T - REQ_OUT
+    Address: https://vpfe-
+hab.dian.gov.co/WcfDianCus
+tomerServices.svc
+    HttpMethod: POST
+    Content-Type: 
+application/soap+xml
+    ExchangeId: 876925f3-9
+e94-48ee-8e9e-f5cc29ef539d
+    ServiceName: 
+WcfDianCustomerServices
+    PortName: 
+IWcfDianCustomerServices
+    PortTypeName: 
+DummyImpl
+    Headers: {Accept=*/*}
+    Payload: 
+<env:Envelope xmlns:env="h
+ttp://www.w3.org/2003/05/s
+oap-envelope" xmlns:wcf="h
+ttp://wcf.dian.colombia" x
+mlns:wsa="http://www.w3.or
+g/2005/08/addressing">
+  <env:Header>
+    <wsse:Security xmlns:w
+sse="http://docs.oasis-ope
+n.org/wss/2004/01/oasis-20
+0401-wss-wssecurity-secext
+-1.0.xsd" xmlns:wsu="http:
+//docs.oasis-open.org/wss/
+2004/01/oasis-200401-wss-w
+ssecurity-utility-1.0.xsd"
+ 
+env:mustUnderstand="true">
+      
+<wsse:BinarySecurityToken 
+EncodingType="http://docs.
+oasis-open.org/wss/2004/01
+/oasis-200401-wss-soap-mes
+sage-security-1.0#Base64Bi
+nary" ValueType="http://do
+cs.oasis-open.org/wss/2004
+/01/oasis-200401-wss-x509-
+token-profile-1.0#X509v3" 
+wsu:Id="X509-44eb23f5-d17f
+-46b0-b3a4-24d8bc5ba98d">M
+IIHHjCCBQagAwIBAgIKEHs5IZg
+lGcw22zANBgkqhkiG9w0BAQsFA
+DCBhjEeMBwGCSqGSIb3DQEJARY
+PaW5mb0Bnc2UuY29tLmNvMSUwI
+wYDVQQDExxBdXRvcmlkYWQgU3V
+ib3JkaW5hZGEgMDEgR1NFMQwwC
+gYDVQQLEwNQS0kxDDAKBgNVBAo
+TA0dTRTEUMBIGA1UEBxMLQm9nb
+3RhIEQuQy4xCzAJBgNVBAYTAkN
+PMB4XDTI1MTIxMTIwNDgwNFoXD
+TI2MDMxMTIwNDgwNFowgfkxFDA
+SBgNVBAMMC0NSVU1JIFMuQS5TM
+SMwIQYDVQQNDBpGRVBKIEdTRSB
+DTCA3NyA3IDQ0IE9GIDcwMTEZM
+BcGCisGAQQBpGYBAwIMCTkwMjA
+wNjcyMDEXMBUGA1UECwwOQURNS
+U5JU1RSQVRJVk8xFTATBgNVBAg
+MDENVTkRJTkFNQVJDQTExMC8GA
+1UECQwoQ2VudHJvIEVtcHJlc2F
+yaWFsIFNhbiBSb3F1ZSBPZmlja
+W5hIDMwMTEPMA0GA1UEBwwGQ0F
+KSUNBMQswCQYDVQQGEwJDTzEMM
+AoGA1UEKQwDTklUMRIwEAYDVQQ
+FEwk5MDIwMDY3MjAwggEiMA0GC
+SqGSIb3DQEBAQUAA4IBDwAwggE
+KAoIBAQDVehNTp7UCg6/Qe4VMQ
+ALG2qNTqAUpPRk5NwJaAQo9HLY
+PX3+iLLB0IOY3TuZWXIK6IKeeP
+Kc3Xne619w6L7x1OLBtMolUVmh
+Vvkb19GtD94ue2qNUeEFdXWIOp
+218ojASTCANs1tcqwumnsYZzqb
+hYn+jxdLX0O7BV2hglzn9UCJPX
+Ifw2H54hJgJCiTmpXAvj+xm0hf
+B6r+Q2FW1bQ9F2u53jq8c8Qai/
+gNNx+R2lLzR5rJh7rV3y5NDJwk
+bTUFI0Vl5U+pP5ChvyjWKjp/Nl
+tKBO8W8Y3RGP1OZNPZSb+AZu03
+iTokFa5M1y4dh90CqJLXfF+yMn
+Tf95UHu29LfAgMBAAGjggIXMII
+CEzAMBgNVHRMBAf8EAjAAMB8GA
+1UdIwQYMBaAFEG81Dl4uIOjFxo
+Imqm4BAIJLdiZMGgGCCsGAQUFB
+wEBBFwwWjAyBggrBgEFBQcwAoY
+maHR0cHM6Ly9jZXJ0czIuZ3NlL
+mNvbS5jby9DQV9TVUIwMS5jcnQ
+wJAYIKwYBBQUHMAGGGGh0dHBzO
+i8vb2NzcDIuZ3NlLmNvbS5jbzB
+jBgNVHREEXDBagQ1IT0xBQENSV
+U1JLkFJhklodHRwczovL2dzZS5
+jb20uY28vZG9jdW1lbnRvcy9jZ
+XJ0aWZpY2FjaW9uZXMvYWNyZWR
+pdGFjaW9uLzE2LUVDRC0wMDEuc
+GRmMIGDBgNVHSAEfDB6MHgGCys
+GAQQBgfMgAQQSMGkwZwYIKwYBB
+QUHAgEWW2h0dHBzOi8vZ3NlLmN
+vbS5jby9kb2N1bWVudG9zL2Nhb
+GlkYWQvRFBDL0RlY2xhcmFjaW9
+uX2RlX1ByYWN0aWNhc19kZV9DZ
+XJ0aWZpY2FjaW9uX1YyMC5wZGY
+wJwYDVR0lBCAwHgYIKwYBBQUHA
+wIGCCsGAQUFBwMEBggrBgEFBQc
+DATA1BgNVHR8ELjAsMCqgKKAmh
+iRodHRwczovL2NybDIuZ3NlLmN
+vbS5jby9DQV9TVUIwMS5jcmwwH
+QYDVR0OBBYEFEYt9QLemA02KGJ
+pYZzDMH2Pvd+AMA4GA1UdDwEB/
+wQEAwIE8DANBgkqhkiG9w0BAQs
+FAAOCAgEAS22lcXnXRuPgTQdCr
+YiGaBK+nkVI5VfrKNdCsY0Y4GW
+G3wpjKGKgtZM4PPCT6BCtnHIb7
+s7QNAmUx1MtZuLOaxOQzSgddCf
+M1ibQG/M9mUndv8i5m91/u+4aF
+3lXSBTUjbHpqbbfP06AWidyzrW
+TsDibskzDcvTHrJ16cFoquq8dr
+txwV7/686ohbTlIEH1SgUwGsnp
+Xc22/wA+xkRmZ45oakq+4nWFZa
+Gm03P8J2sW2j7R6lj5V7EWR09p
+mezeZUTofRRxhzsY9lxHUE/wvp
+66SzLVk3Fyt0fqPzFeUPKY14UG
+egE9l39IzyhDgBwO8dQeFsB7a1
+NCOKVSQxnQBqp8rAY9UQ3BebEo
+RPj9lun/KJkTpKzd4r6na3HYQg
+ZmMkHUK3eJjLJGd8brPoMvOZgr
+lwm8PTR6dbz+7MkCo/h4l5bOVh
+dae1djj9bhyPVucaXQxYyFwzh+
+y+az8rLaPXkVzoivwWowzX3TtO
+ncj6PzsOm+TkFQ+PpG5hrrL9oQ
+2tcx7c0plGtrA6jghXClzDXnVD
+JBDQr/sDBNyGbzsIkF+u7byLFR
+Ae/FwphRZX8akEn/pFzvG7s7Eb
+ZabvxGy2FC7ry/KXmNmP7Jxt6x
+4RFJ3G2tp16imeulexyKljKuAn
+LSsokyOFhnaYxGAJ5Ck6hCNeJo
+OmS/W46hgc65Bttw=</wsse:Bi
+narySecurityToken>
+      <ds:Signature xmlns:
+ds="http://www.w3.org/2000
+/09/xmldsig#" Id="SIG-bd40
+da13-c394-4853-9660-f2ccc4
+6949bf">
+        <ds:SignedInfo>
+          <ds:Canonicaliza
+tionMethod Algorithm="http
+://www.w3.org/2001/10/xml-
+exc-c14n#">
+            
+<ec:InclusiveNamespaces xm
+lns:ec="http://www.w3.org/
+2001/10/xml-exc-c14n#" 
+PrefixList="env wcf wsa"/>
+          </ds:Canonicaliz
+ationMethod>
+          
+<ds:SignatureMethod Algori
+thm="http://www.w3.org/200
+1/04/xmldsig-more#rsa-sha2
+56"/>
+          <ds:Reference UR
+I="#TS-020d9d2b-627f-49c4-
+95dc-ab3db548821a">
+            
+<ds:Transforms>
+              
+<ds:Transform Algorithm="h
+ttp://www.w3.org/2001/10/x
+ml-exc-c14n#">
+                
+<ec:InclusiveNamespaces xm
+lns:ec="http://www.w3.org/
+2001/10/xml-exc-c14n#" 
+PrefixList="wsse env wcf 
+wsa"/>
+              
+</ds:Transform>
+            
+</ds:Transforms>
+            
+<ds:DigestMethod Algorithm
+="http://www.w3.org/2001/0
+4/xmlenc#sha256"/>
+            <ds:DigestValu
+e>a1+7Rs2U/F89ScsAeJnDbcKA
+v1nAentrEOrR7JiTbHY=</ds:D
+igestValue>
+          </ds:Reference>
+          <ds:Reference UR
+I="#id-1d8dc509-c8bb-4b68-
+8028-2372d3394182">
+            
+<ds:Transforms>
+              
+<ds:Transform Algorithm="h
+ttp://www.w3.org/2001/10/x
+ml-exc-c14n#">
+                
+<ec:InclusiveNamespaces xm
+lns:ec="http://www.w3.org/
+2001/10/xml-exc-c14n#" 
+PrefixList="wcf wsa"/>
+              
+</ds:Transform>
+            
+</ds:Transforms>
+            
+<ds:DigestMethod Algorithm
+="http://www.w3.org/2001/0
+4/xmlenc#sha256"/>
+            <ds:DigestValu
+e>AKoG3ZSYOxS8TeSV+AHXFMth
+++Dbg58pd1q32mHkItI=</ds:D
+igestValue>
+          </ds:Reference>
+          <ds:Reference UR
+I="#id-b5ccc33d-dc70-49c2-
+82b1-425f21329c63">
+            
+<ds:Transforms>
+              
+<ds:Transform Algorithm="h
+ttp://www.w3.org/2001/10/x
+ml-exc-c14n#">
+                
+<ec:InclusiveNamespaces xm
+lns:ec="http://www.w3.org/
+2001/10/xml-exc-c14n#" 
+PrefixList="env wcf"/>
+              
+</ds:Transform>
+            
+</ds:Transforms>
+            
+<ds:DigestMethod Algorithm
+="http://www.w3.org/2001/0
+4/xmlenc#sha256"/>
+            <ds:DigestValu
+e>thMiZ9I2NzhV4I4To9P2ViPj
+c0qqke+LlUv1PXTPmFg=</ds:D
+igestValue>
+          </ds:Reference>
+          <ds:Reference UR
+I="#id-4230da71-2fda-4a7b-
+a880-b5cce7d1dbc6">
+            
+<ds:Transforms>
+              
+<ds:Transform Algorithm="h
+ttp://www.w3.org/2001/10/x
+ml-exc-c14n#">
+                
+<ec:InclusiveNamespaces xm
+lns:ec="http://www.w3.org/
+2001/10/xml-exc-c14n#" 
+PrefixList="env wcf"/>
+              
+</ds:Transform>
+            
+</ds:Transforms>
+            
+<ds:DigestMethod Algorithm
+="http://www.w3.org/2001/0
+4/xmlenc#sha256"/>
+            <ds:DigestValu
+e>v5tHf9ZMHKxNWjMvgNLAbfWl
+75Yjp3ys7+Rhb4iHKYA=</ds:D
+igestValue>
+          </ds:Reference>
+        </ds:SignedInfo>
+        <ds:SignatureValue
+>myq61NwQFiu2XJp4W61Qme90+
+SwyEkRJg6a35vmAlMdErvRhKAF
+iwhOYA+DI+XneBthmfkpVPOVbh
+VXB3NUyZdtbGLftaDvKS0u0KZ2
+335ftJ5ZZcxlTVFghcmzIQe7cP
+8ZDbBW3nGQAhCzt7d7NSdqnCC9
+vpRhN6dWf3fGqJBPHMxRlrdUg8
+BEOWL+fhHDx3HkYjEso6gu5zRP
+DZd5jJQvu6yp+8MNcCoxiZlrBB
+Jq2/YDAz/wNJbJYB8wH2bFbAa2
+zOb5vQUvYDQpyzy+BvWJVWcVWa
+ChJvJnRBmaugvqJMsQ3SYwQ9/h
+SRIrmh3vsp0AztQW+LQWB25dAR
+7ZosQ==</ds:SignatureValue
+>
+        <ds:KeyInfo Id="KI
+-93331d4f-d2cf-4ccb-b164-c
+3e3f3d03d0f">
+          <wsse:SecurityTo
+kenReference xmlns:wsse="h
+ttp://docs.oasis-open.org/
+wss/2004/01/oasis-200401-w
+ss-wssecurity-secext-1.0.x
+sd" xmlns:wsu="http://docs
+.oasis-open.org/wss/2004/0
+1/oasis-200401-wss-wssecur
+ity-utility-1.0.xsd" wsu:I
+d="STR-a83e4762-f514-4db2-
+a52d-4e45d87be717">
+            
+<wsse:Reference URI="#X509
+-44eb23f5-d17f-46b0-b3a4-2
+4d8bc5ba98d" ValueType="ht
+tp://docs.oasis-open.org/w
+ss/2004/01/oasis-200401-ws
+s-x509-token-profile-1.0#X
+509v3"/>
+          </wsse:SecurityT
+okenReference>
+        </ds:KeyInfo>
+      </ds:Signature>
+      <wsu:Timestamp wsu:I
+d="TS-020d9d2b-627f-49c4-9
+5dc-ab3db548821a">
+        <wsu:Created>2025-
+12-27T19:14:43.146Z</wsu:C
+reated>
+        <wsu:Expires>2025-
+12-27T19:19:43.146Z</wsu:E
+xpires>
+      </wsu:Timestamp>
+    </wsse:Security>
+    <wsa:Action xmlns:wsu=
+"http://docs.oasis-open.or
+g/wss/2004/01/oasis-200401
+-wss-wssecurity-utility-1.
+0.xsd" wsu:Id="id-4230da71
+-2fda-4a7b-a880-b5cce7d1db
+c6">http://wcf.dian.colomb
+ia/IWcfDianCustomerService
+s/SendTestSetAsync</wsa:Ac
+tion>
+    <wsa:To xmlns:wsu="htt
+p://docs.oasis-open.org/ws
+s/2004/01/oasis-200401-wss
+-wssecurity-utility-1.0.xs
+d" wsu:Id="id-b5ccc33d-dc7
+0-49c2-82b1-425f21329c63">
+https://vpfe-hab.dian.gov.
+co/WcfDianCustomerServices
+.svc</wsa:To>
+  </env:Header>
+  <env:Body xmlns:wsu="htt
+p://docs.oasis-open.org/ws
+s/2004/01/oasis-200401-wss
+-wssecurity-utility-1.0.xs
+d" wsu:Id="id-1d8dc509-c8b
+b-4b68-8028-2372d3394182">
+    <wcf:SendTestSetAsync>
+      <wcf:fileName>test.z
+ip</wcf:fileName>
+      <wcf:contentFile>UEs
+DBBQAAAAIAAAAIQD+6mQGAAAAA
+AEAAAAKAAAAdGVzdC50eHQuZ2V
+uZXJhdGVkUEsBAhQAFAAAAAgAA
+AAhAP7qZAYAAAAAAQAAAAoAAAA
+AAAAAAAAAAAEAAAB0ZXN0LnR4d
+FBLBQYAAAAAAQABADwAAAAwAAA
+AAAA=</wcf:contentFile>
+      <wcf:testSetId>fa157
+41c-1c8e-49bf-a88a-faad32c
+90a9f</wcf:testSetId>
+    
+</wcf:SendTestSetAsync>
+  </env:Body>
+</env:Envelope>
+
+
+[main] INFO org.apache.cxf
+.services.DummyImpl.FAULT_
+IN - FAULT_IN
+    Content-Type: 
+application/soap+xml; 
+charset=utf-8
+    ResponseCode: 500
+    ExchangeId: 876925f3-9
+e94-48ee-8e9e-f5cc29ef539d
+    ServiceName: 
+WcfDianCustomerServices
+    PortName: 
+IWcfDianCustomerServices
+    PortTypeName: 
+DummyImpl
+    Headers: {x-azure-ref=
+20251227T191445Z-r196bf7dd
+85wdvgrhC1MIAxkqg0000001u3
+g00000000cq01, 
+X-Cache=CONFIG_NOCACHE, 
+Cache-Control=private, X-A
+spNet-Version=4.0.30319, 
+connection=keep-alive, con
+tent-type=application/soap
++xml; charset=utf-8, Set-C
+ookie=[ARRAffinitySameSite
+=8e40e88517914b50a7ab096a5
+2b642c3e56a9991ca2cba1a3cb
+e683bb2af633e;Path=/;HttpO
+nly;SameSite=None;Secure;D
+omain=vpfe-hab.dian.gov.co
+, ARRAffinity=8e40e8851791
+4b50a7ab096a52b642c3e56a99
+91ca2cba1a3cbe683bb2af633e
+;Path=/;HttpOnly;Secure;Do
+main=vpfe-hab.dian.gov.co,
+ ASP.NET_SessionId=1oiu5ss
+13dmqkj2qra3h1puy; 
+path=/; HttpOnly; 
+SameSite=Lax], 
+Content-Length=576, 
+Date=Sat, 27 Dec 2025 
+19:14:45 GMT, 
+X-Powered-By=ASP.NET}
+    Payload: <s:Envelope x
+mlns:s="http://www.w3.org/
+2003/05/soap-envelope" xml
+ns:a="http://www.w3.org/20
+05/08/addressing">
+  <s:Header>
+    <a:Action s:mustUnders
+tand="1">http://www.w3.org
+/2005/08/addressing/soap/f
+ault</a:Action>
+  </s:Header>
+  <s:Body>
+    <s:Fault>
+      <s:Code>
+        <s:Value>s:Sender<
+/s:Value>
+        <s:Subcode>
+          <s:Value xmlns:a
+="http://docs.oasis-open.o
+rg/wss/2004/01/oasis-20040
+1-wss-wssecurity-secext-1.
+0.xsd">a:InvalidSecurity</
+s:Value>
+        </s:Subcode>
+      </s:Code>
+      <s:Reason>
+        <s:Text 
+xml:lang="en-US">An error 
+occurred when verifying 
+security for the 
+message.</s:Text>
+      </s:Reason>
+    </s:Fault>
+  </s:Body>
+</s:Envelope>
+
+
+javax.xml.ws.soap.SOAPFaul
+tException: An error 
+occurred when verifying 
+security for the message.
+	at org.apache.cxf.jaxws.D
+ispatchImpl.mapException(D
+ispatchImpl.java:285)
+	at org.apache.cxf.jaxws.D
+ispatchImpl.invoke(Dispatc
+hImpl.java:330)
+	at org.apache.cxf.jaxws.D
+ispatchImpl.invoke(Dispatc
+hImpl.java:241)
+	at com.crumi.dian.DianCli
+ent.main(DianClient.java:1
+43)
+Caused by: org.apache.cxf.
+binding.soap.SoapFault: 
+An error occurred when 
+verifying security for 
+the message.
+	at org.apache.cxf.binding
+.soap.interceptor.Soap12Fa
+ultInInterceptor.unmarshal
+Fault(Soap12FaultInInterce
+ptor.java:156)
+	at org.apache.cxf.binding
+.soap.interceptor.Soap12Fa
+ultInInterceptor.handleMes
+sage(Soap12FaultInIntercep
+tor.java:66)
+	at org.apache.cxf.binding
+.soap.interceptor.Soap12Fa
+ultInInterceptor.handleMes
+sage(Soap12FaultInIntercep
+tor.java:52)
+	at org.apache.cxf.phase.P
+haseInterceptorChain.doInt
+ercept(PhaseInterceptorCha
+in.java:307)
+	at org.apache.cxf.interce
+ptor.AbstractFaultChainIni
+tiatorObserver.onMessage(A
+bstractFaultChainInitiator
+Observer.java:112)
+	at org.apache.cxf.binding
+.soap.interceptor.CheckFau
+ltInterceptor.handleMessag
+e(CheckFaultInterceptor.ja
+va:70)
+	at org.apache.cxf.binding
+.soap.interceptor.CheckFau
+ltInterceptor.handleMessag
+e(CheckFaultInterceptor.ja
+va:35)
+	at org.apache.cxf.phase.P
+haseInterceptorChain.doInt
+ercept(PhaseInterceptorCha
+in.java:307)
+	at org.apache.cxf.endpoin
+t.ClientImpl.onMessage(Cli
+entImpl.java:829)
+	at org.apache.cxf.transpo
+rt.http.HTTPConduit$Wrappe
+dOutputStream.handleRespon
+seInternal(HTTPConduit.jav
+a:1726)
+	at org.apache.cxf.transpo
+rt.http.HTTPConduit$Wrappe
+dOutputStream.handleRespon
+se(HTTPConduit.java:1592)
+	at org.apache.cxf.transpo
+rt.http.HTTPConduit$Wrappe
+dOutputStream.close(HTTPCo
+nduit.java:1389)
+	at org.apache.cxf.ext.log
+ging.LoggingOutputStream.p
+ostClose(LoggingOutputStre
+am.java:53)
+	at org.apache.cxf.io.Cach
+edOutputStream.close(Cache
+dOutputStream.java:228)
+	at org.apache.cxf.transpo
+rt.AbstractConduit.close(A
+bstractConduit.java:56)
+	at org.apache.cxf.transpo
+rt.http.HTTPConduit.close(
+HTTPConduit.java:689)
+	at org.apache.cxf.interce
+ptor.MessageSenderIntercep
+tor$MessageSenderEndingInt
+erceptor.handleMessage(Mes
+sageSenderInterceptor.java
+:63)
+	at org.apache.cxf.phase.P
+haseInterceptorChain.doInt
+ercept(PhaseInterceptorCha
+in.java:307)
+	at org.apache.cxf.endpoin
+t.ClientImpl.doInvoke(Clie
+ntImpl.java:528)
+	at org.apache.cxf.endpoin
+t.ClientImpl.invoke(Client
+Impl.java:439)
+	at org.apache.cxf.endpoin
+t.ClientImpl.invoke(Client
+Impl.java:354)
+	at org.apache.cxf.endpoin
+t.ClientImpl.invoke(Client
+Impl.java:312)
+	at org.apache.cxf.endpoin
+t.ClientImpl.invokeWrapped
+(ClientImpl.java:347)
+	at org.apache.cxf.jaxws.D
+ispatchImpl.invoke(Dispatc
+hImpl.java:322)
+	... 2 more

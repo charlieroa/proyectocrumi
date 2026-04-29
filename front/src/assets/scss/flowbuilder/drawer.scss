@@ -1,0 +1,192 @@
+/* ====================================================== */
+/* ESTILOS COMPLETOS Y CORREGIDOS PARA EL DRAWER     */
+/* ====================================================== */
+
+// ✅ 1. CREAMOS UN MIXIN con los estilos compartidos para los inputs.
+@mixin shared-input-styles {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #3a3a3a;
+  color: #fff;
+  outline: none;
+
+  &::placeholder {
+    color: #aaa;
+  }
+
+  &:focus {
+    border-color: #5e72e4;
+  }
+}
+
+
+/* --- Estructura General del Drawer (Tu Código Base) --- */
+.drawer-left {
+  position: fixed;
+  top: 70px;
+  right: 0;
+  width: 0;
+  height: calc(100% - 70px);
+  background: #2b2b2b;
+  color: #fff;
+  border-left: 1px solid #444;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+
+  &.open {
+    width: 300px;
+  }
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #444;
+  background: #1e1e1e;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+}
+
+.drawer-search {
+  padding: 10px 15px;
+  border-bottom: 1px solid #444;
+
+  input {
+    // ✅ 2. INCLUIMOS EL MIXIN aquí para aplicar los estilos.
+    @include shared-input-styles;
+  }
+}
+
+/* --- Estilos para las Listas de Opciones (Tu Código Base) --- */
+.drawer-options {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+
+  li {
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #3a3a3a;
+    }
+
+    .drawer-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 15px;
+
+      .drawer-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        margin-top: 2px;
+      }
+
+      .drawer-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+
+        strong {
+          font-size: 14px;
+        }
+
+        small {
+          font-size: 12px;
+          color: #ccc;
+        }
+      }
+    }
+  }
+}
+
+.back-btn {
+  text-align: center;
+  color: #aaa;
+  font-weight: bold;
+  padding: 12px;
+}
+
+/* --- NUEVO: Estilos para el Formulario de Configuración (Integrado) --- */
+.drawer-config {
+  padding: 15px;
+  overflow-y: auto;
+  flex-grow: 1;
+
+  .config-description {
+    font-size: 13px;
+    color: #ccc;
+    margin-top: 0;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+}
+
+.form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ccc;
+    text-transform: uppercase;
+  }
+
+  input, textarea {
+    // ✅ 3. Y LO REUTILIZAMOS aquí. Problema solucionado.
+    @include shared-input-styles;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+  }
+}
+
+.back-link-wrapper {
+  text-align: center;
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid #444;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #fff;
+  }
+}

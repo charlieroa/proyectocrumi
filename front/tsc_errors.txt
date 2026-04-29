@@ -1,0 +1,7 @@
+﻿src/pages/income/SalesInvoice/tabs/FacturaTab.tsx(8,31): error TS1261: Already included file name 'C:/proyectos/crumi/front/src/components/AutocompleteInput.tsx' differs from file name 'C:/proyectos/crumi/front/src/Components/AutocompleteInput.tsx' only in casing.
+  The file is in the program because:
+    Imported via '../../../../components/AutocompleteInput' from file 'C:/proyectos/crumi/front/src/pages/income/SalesInvoice/tabs/FacturaTab.tsx'
+    Imported via '../../../../components/AutocompleteInput' from file 'C:/proyectos/crumi/front/src/pages/income/SalesInvoice/tabs/NotaDebitoTab.tsx'
+    Imported via '../../../../components/AutocompleteInput' from file 'C:/proyectos/crumi/front/src/pages/income/SalesInvoice/tabs/NotaCreditoTab.tsx'
+    Imported via '../../../../components/AutocompleteInput' from file 'C:/proyectos/crumi/front/src/pages/income/SalesInvoice/tabs/PagoTab.tsx'
+    Matched by include pattern '**/*.tsx' in 'C:/proyectos/crumi/front/tsconfig.json'

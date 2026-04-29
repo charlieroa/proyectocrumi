@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:UBLVersionID>UBL 2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>10</cbc:CustomizationID>
+  <cbc:ProfileID>DIAN 2.1</cbc:ProfileID>
+  <cbc:ID>POS-5</cbc:ID>
+  <cbc:UUID schemeName="CUFE-SHA384">9b3e6fe559d186fa0bf5e1ca7fd25fa1843052ddb005921923612b9f78a35633af14e7676a6a473c085ef754cd02aa9a</cbc:UUID>
+  <cbc:IssueDate>2025-12-12</cbc:IssueDate>
+  <cbc:IssueTime>11:07:57</cbc:IssueTime>
+  <cbc:InvoiceTypeCode>01</cbc:InvoiceTypeCode>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cac:PartyTaxScheme>
+        <cbc:RegistrationName>Demo</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="31" schemeName="31">900123456</cbc:CompanyID>
+      </cac:PartyTaxScheme>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyTaxScheme>
+        <cbc:RegistrationName>alejitoito .</cbc:RegistrationName>
+        <cbc:CompanyID schemeID="13" schemeName="31">b6973bde-a99d-4025-a807-63dd764ef7c9</cbc:CompanyID>
+      </cac:PartyTaxScheme>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="COP">9000</cbc:LineExtensionAmount>
+    <cbc:TaxInclusiveAmount currencyID="COP">9000</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="COP">9000</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="94">1</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="COP"/>
+    <cac:Item>
+      <cbc:Description>dasdsad</cbc:Description>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="COP">10000</cbc:PriceAmount>
+    </cac:Price>
+  </cac:InvoiceLine>
+</Invoice>
