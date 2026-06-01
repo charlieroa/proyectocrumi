@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ProductosServicios from './sections/ProductosServicios';
 import { getFeStatus, FeStatus } from '../../services/feStatusApi';
 import NuevoTerceroModal from '../../Components/Common/NuevoTerceroModal';
+import EvolutionConnect from '../Mensajeria/components/EvolutionConnect';
+import { getMySubscription, Subscription } from '../../services/billingApi';
 import {
   Badge,
   Button,
@@ -38,6 +41,7 @@ import {
   Building,
   Building2,
   Calculator,
+  CalendarCheck,
   CheckCheck,
   ChevronDown,
   Clock,
@@ -52,6 +56,7 @@ import {
   Landmark,
   Layers,
   LineChart,
+  MessagesSquare,
   ListChecks,
   Pencil,
   Percent,
@@ -64,6 +69,7 @@ import {
   Settings as SettingsIcon,
   ShoppingCart,
   Sparkles,
+  Store,
   Truck,
   UserMinus,
   UserPlus,
@@ -107,12 +113,15 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   'ri-list-check-2': ListChecks,
   'ri-contacts-book-line': Contact,
   'ri-calculator-line': Calculator,
+  'ri-calendar-check-line': CalendarCheck,
   'ri-magic-line': Wand2,
   'ri-settings-3-line': SettingsIcon,
   'ri-file-copy-2-line': Copy,
   'ri-wallet-3-line': Wallet,
   'ri-printer-line': Printer,
   'ri-sparkling-line': Sparkles,
+  'ri-whatsapp-line': MessagesSquare,
+  'ri-store-2-line': Store,
 };
 
 type MainTab = 'ventas' | 'compras' | 'productos' | 'reportes' | 'configuracion';
@@ -130,6 +139,7 @@ type Tile = {
  * VENTAS
  * ============================================================ */
 const VENTAS_TILES: Tile[] = [
+  { path: '/contabilidad/pos', title: 'Punto de venta', desc: 'Caja rápida: vende, cobra e imprime el ticket', icon: 'ri-store-2-line', color: 'success', featured: true },
   { path: '/contabilidad/factura-venta', title: 'Factura de venta', desc: 'Emitir y consultar facturas electrónicas DIAN', icon: 'ri-bill-line', color: 'success' },
   { path: '/contabilidad/recibos-caja', title: 'Recibos de caja', desc: 'Cobros recibidos aplicados a facturas de venta', icon: 'ri-hand-coin-line', color: 'success' },
   { path: '/contabilidad/notas/credito', title: 'Notas de crédito', desc: 'Anular o ajustar facturas emitidas', icon: 'ri-file-minus-line', color: 'success' },
@@ -142,6 +152,7 @@ const VENTAS_TILES: Tile[] = [
  * COMPRAS
  * ============================================================ */
 const COMPRAS_TILES: Tile[] = [
+  { path: '/contabilidad/bandeja-dian', title: 'Bandeja DIAN', desc: 'Sube XML/ZIP de facturas y cáusalas con IA automáticamente', icon: 'ri-inbox-archive-line', color: 'primary' },
   { path: '/contabilidad/compras', title: 'Factura de compra', desc: 'Registrar facturas recibidas de proveedores', icon: 'ri-shopping-cart-2-line', color: 'warning' },
   { path: '/contabilidad/pagos', title: 'Pagos a proveedores', desc: 'Registrar pagos emitidos a proveedores', icon: 'ri-bank-card-line', color: 'danger' },
   { path: '/contabilidad/documentos-soporte', title: 'Documento soporte (DSA)', desc: 'Soporte de gastos a no obligados a facturar', icon: 'ri-file-text-line', color: 'info' },
@@ -164,9 +175,11 @@ const PRODUCTOS_TILES: Tile[] = [
  * REPORTES
  * ============================================================ */
 const REPORTES_TILES: Tile[] = [
+  // Facturación / cartera
+  { path: '/contabilidad/resumen-facturacion', title: 'Resumen de facturación', desc: 'Consolidado por mes y cliente + alarmas de cartera y clientes sin facturar', icon: 'ri-line-chart-line', color: 'primary' },
   // Financieros
-  { path: '/contabilidad/consultas?view=balance', title: 'Balance general', desc: 'Activos, pasivos y patrimonio', icon: 'ri-scales-3-line', color: 'primary' },
-  { path: '/contabilidad/consultas?view=pyg', title: 'Estado de resultados', desc: 'Ingresos, costos, gastos y utilidad', icon: 'ri-line-chart-line', color: 'success' },
+  { path: '/contabilidad/consultas?view=balance', title: 'Estado de la Situación Financiera', desc: 'Activos, pasivos y patrimonio', icon: 'ri-scales-3-line', color: 'primary' },
+  { path: '/contabilidad/consultas?view=pyg', title: 'Estado de Resultados Integral', desc: 'Ingresos, costos, gastos y utilidad', icon: 'ri-line-chart-line', color: 'success' },
   { path: '/contabilidad/consultas?view=flujo', title: 'Flujo de efectivo', desc: 'Entradas y salidas de caja', icon: 'ri-exchange-funds-line', color: 'info' },
   { path: '/contabilidad/consultas?view=patrimonio', title: 'Patrimonio', desc: 'Estado de cambios en el patrimonio', icon: 'ri-pie-chart-line', color: 'info' },
   // Oficiales
@@ -203,6 +216,7 @@ const CONFIG_FEATURED: Tile[] = [
 ];
 
 const CONFIG_TILES: Tile[] = [
+  { path: '/contabilidad/periodos', title: 'Cierre de mes', desc: 'Cerrar y reabrir períodos contables. Bloquea movimientos en meses consolidados.', icon: 'ri-calendar-check-line', color: 'danger' },
   { path: '/contabilidad/config/contabilidad-maestra', title: 'Contabilidad maestra', desc: 'Cuentas por defecto, prefijos, año fiscal', icon: 'ri-calculator-line', color: 'primary' },
   { path: '/contabilidad/config/facturacion-electronica', title: 'Facturación electrónica (DIAN)', desc: 'Certificado, resolución, prefijos y radicación DIAN', icon: 'ri-government-line', color: 'success' },
   { path: '/contabilidad/configurar-fe', title: 'Asistente FE paso a paso', desc: 'Wizard guiado de configuración DIAN', icon: 'ri-magic-line', color: 'warning' },
@@ -279,9 +293,21 @@ const ContabilidadHub: React.FC = () => {
   const [addTpOpen, setAddTpOpen] = useState(false);
 
   const [feStatus, setFeStatus] = useState<FeStatus | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [subLoading, setSubLoading] = useState(true);
   useEffect(() => {
     getFeStatus().then((r) => setFeStatus(r.data)).catch(() => {});
+    getMySubscription()
+      .then((r: any) => setSubscription(r.data?.subscription || null))
+      .catch(() => setSubscription(null))
+      .finally(() => setSubLoading(false));
   }, []);
+  const formatCOP = (n: number | string | null | undefined) =>
+    new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(Number(n) || 0);
+  const subStatusColor: Record<string, string> = {
+    trialing: 'info', active: 'success', past_due: 'warning',
+    canceled: 'danger', unpaid: 'danger', incomplete: 'secondary',
+  };
 
   const feBadge = (path: string): React.ReactNode => {
     if (!feStatus) return null;
@@ -334,6 +360,9 @@ const ContabilidadHub: React.FC = () => {
             <DropdownItem onClick={() => navigate('/contabilidad/factura-venta?nuevo=1')} className="d-flex align-items-center gap-2">
               <Receipt size={16} className="text-success" /> Factura de venta
             </DropdownItem>
+            <DropdownItem onClick={() => navigate('/contabilidad/factura-venta')} className="d-flex align-items-center gap-2">
+              <BookOpen size={16} className="text-success" /> Notas de contabilidad — Ventas
+            </DropdownItem>
             <DropdownItem onClick={() => navigate('/cotizaciones?nuevo=1')} className="d-flex align-items-center gap-2">
               <FileText size={16} className="text-info" /> Cotización
             </DropdownItem>
@@ -342,6 +371,9 @@ const ContabilidadHub: React.FC = () => {
             </DropdownItem>
             <DropdownItem onClick={() => navigate('/contabilidad/compras')} className="d-flex align-items-center gap-2">
               <ShoppingCart size={16} className="text-warning" /> Factura de compra
+            </DropdownItem>
+            <DropdownItem onClick={() => navigate('/contabilidad/compras')} className="d-flex align-items-center gap-2">
+              <BookOpen size={16} className="text-warning" /> Notas de contabilidad — Compras
             </DropdownItem>
             <DropdownItem onClick={() => navigate('/contabilidad/capturar')} className="d-flex align-items-center gap-2">
               <Pencil size={16} className="text-primary" /> Capturar comprobante
@@ -465,6 +497,81 @@ const ContabilidadHub: React.FC = () => {
 
         {/* CONFIGURACIÓN */}
         <TabPane tabId="configuracion">
+          {/* Banners superiores: WhatsApp QR + Plan/Suscripción */}
+          <Row className="g-3 mb-3">
+            <Col xl={7}>
+              <EvolutionConnect />
+            </Col>
+            <Col xl={5}>
+              <Card className="shadow-sm border-0 h-100" style={{ borderRadius: 16, overflow: 'hidden' }}>
+                <div style={{
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                  padding: '20px 24px',
+                  color: 'white',
+                }}>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center gap-3">
+                      <div
+                        className="d-flex align-items-center justify-content-center"
+                        style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.18)', borderRadius: 12 }}
+                      >
+                        <i className="ri-bank-card-line" style={{ fontSize: 22 }} />
+                      </div>
+                      <div>
+                        <div className="fw-semibold" style={{ fontSize: 16 }}>Plan y suscripción</div>
+                        <div className="small" style={{ opacity: 0.85 }}>Emprende · PyME · Pro · Contador</div>
+                      </div>
+                    </div>
+                    {subscription && (
+                      <Badge
+                        color={subStatusColor[subscription.status] || 'secondary'}
+                        pill
+                        style={{ fontSize: 11, padding: '6px 12px', background: 'rgba(255,255,255,0.95)', color: '#1A1D1F' }}
+                      >
+                        {subscription.status}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <CardBody className="p-4">
+                  {subLoading ? (
+                    <div className="text-center py-3">
+                      <span className="spinner-border spinner-border-sm" />
+                    </div>
+                  ) : subscription ? (
+                    <>
+                      <div className="d-flex justify-content-between mb-2">
+                        <span className="text-muted">Plan actual</span>
+                        <strong>{subscription.plan_name || subscription.plan_code}</strong>
+                      </div>
+                      <div className="d-flex justify-content-between mb-3">
+                        <span className="text-muted">Mensual</span>
+                        <strong>{formatCOP(subscription.price_cop)}</strong>
+                      </div>
+                      <Link to="/billing" className="btn btn-dark w-100" style={{ borderRadius: 999 }}>
+                        <i className="ri-settings-3-line me-1" /> Cambiar plan o cancelar
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-muted small mb-3">
+                        Aún no elegís plan. Empezá con 14 días gratis o pagá un plan ya.
+                      </p>
+                      <Link to="/billing" className="btn w-100" style={{
+                        background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+                        color: 'white',
+                        borderRadius: 999,
+                      }}>
+                        <i className="ri-rocket-line me-1" /> Elegir plan
+                      </Link>
+                    </>
+                  )}
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          {/* Tiles de configuración contable */}
           <Row className="g-3">
             {[...CONFIG_FEATURED, ...CONFIG_TILES].map((t, i) => (
               <Col md={6} xl={4} key={`${t.path}-${t.title}-${i}`}>

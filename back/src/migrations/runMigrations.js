@@ -4,6 +4,19 @@
 const db = require('../config/db');
 const { createAllTablesSQL } = require('./createAllTables');
 const { whatsappTablesSQL } = require('./025_whatsapp_tables');
+const { posTablesSQL } = require('./026_pos_tables');
+const { aiUsageTablesSQL } = require('./027_ai_usage_tables');
+const { planGatingSQL } = require('./028_plan_gating');
+const { planModulesLandingFixSQL } = require('./031_plan_modules_landing_fix');
+const { subscriptionBonusModulesSQL } = require('./032_subscription_bonus_modules');
+const { ecommercePendingOrdersSQL } = require('./033_ecommerce_pending_orders');
+const { passwordResetColumnsSQL } = require('./034_password_reset_columns');
+const { tenantAiCredentialsSQL } = require('./035_tenant_ai_credentials');
+const { waConversationHumanHandlingSQL } = require('./036_wa_conversation_human_handling');
+const { tenantAiCredentialsCrumiProviderSQL } = require('./037_tenant_ai_credentials_crumi_provider');
+const { waInvoiceDraftsSQL } = require('./039_wa_invoice_drafts');
+const { dianInboxSQL } = require('./040_dian_inbox');
+const { dianInboxConfigSQL } = require('./041_dian_inbox_config');
 const { crmTablesSQL } = require('./crmTables');
 const { taxManagementSQL } = require('./taxManagement');
 const { addFiscalMetadataSQL } = require('./addFiscalMetadata');
@@ -218,6 +231,8 @@ const migrations = [
                 withholding_source_code VARCHAR(20),
                 withholding_ica_code VARCHAR(20),
                 withholding_vat_code VARCHAR(20),
+                other_expenses_code VARCHAR(20),
+                impoconsumo_suffered_code VARCHAR(20),
                 rounding_account_code VARCHAR(20),
                 fx_difference_account_code VARCHAR(20),
                 created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -912,6 +927,285 @@ const migrations = [
             CREATE INDEX IF NOT EXISTS idx_invoice_advances_invoice ON invoice_advances(invoice_id);
             CREATE INDEX IF NOT EXISTS idx_invoice_advances_tenant ON invoice_advances(tenant_id);
         `
+    },
+    {
+        name: 'add_alegra_test_set_last_error',
+        sql: `
+            ALTER TABLE tenants ADD COLUMN IF NOT EXISTS alegra_test_set_last_error TEXT;
+        `
+    },
+    {
+        // ID interno del test set en Alegra (ULID). Distinto del governmentId de la DIAN
+        // (que se guarda en alegra_test_set_id). Alegra exige el ID interno para GET /test-sets/{id};
+        // consultar por governmentId devuelve 404.
+        name: 'add_alegra_test_set_internal_id',
+        sql: `
+            ALTER TABLE tenants ADD COLUMN IF NOT EXISTS alegra_test_set_internal_id VARCHAR(100);
+        `
+    },
+    {
+        name: 'add_product_default_puc_codes',
+        sql: `
+            ALTER TABLE products ADD COLUMN IF NOT EXISTS inventory_account_code VARCHAR(20);
+            ALTER TABLE products ADD COLUMN IF NOT EXISTS revenue_account_code VARCHAR(20);
+            ALTER TABLE products ADD COLUMN IF NOT EXISTS cost_account_code VARCHAR(20);
+        `
+    },
+    {
+        name: 'create_billing_tables',
+        sql: `
+            CREATE TABLE IF NOT EXISTS plans (
+                id SERIAL PRIMARY KEY,
+                code VARCHAR(20) UNIQUE NOT NULL,
+                name VARCHAR(100) NOT NULL,
+                description TEXT,
+                price_cop NUMERIC(18,2) NOT NULL DEFAULT 0,
+                invoices_per_month INT,
+                multi_tenant BOOLEAN DEFAULT false,
+                trial_days INT DEFAULT 0,
+                stripe_price_id VARCHAR(100),
+                stripe_product_id VARCHAR(100),
+                features JSONB,
+                is_active BOOLEAN DEFAULT true,
+                sort_order INT DEFAULT 0,
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            );
+
+            INSERT INTO plans (code, name, description, price_cop, invoices_per_month, multi_tenant, trial_days, sort_order, features)
+            VALUES
+                ('free',     'Free',     'Para probar Crumi sin tarjeta. 14 días.',  0,       10,    false, 14, 1, '{"whatsapp_bot": false, "support": "comunidad"}'::jsonb),
+                ('inicia',   'Inicia',   'Para arrancar — no obligado a facturar.',  39900,   50,    false, 0,  2, '{"whatsapp_bot": false, "support": "email"}'::jsonb),
+                ('pyme',     'Pyme',     'PyMEs que venden todos los días.',         99900,   200,   false, 0,  3, '{"whatsapp_bot": true,  "support": "email"}'::jsonb),
+                ('negocio',  'Negocio',  'PyMEs con sedes y equipo más grande.',     199900,  NULL,  false, 0,  4, '{"whatsapp_bot": true,  "support": "prioritario"}'::jsonb),
+                ('contador', 'Contador', 'Contadores que manejan multiples empresas',199000,  NULL,  true,  0,  5, '{"whatsapp_bot": true,  "support": "telefono", "multi_tenant_max": 10}'::jsonb)
+            ON CONFLICT (code) DO NOTHING;
+
+            CREATE TABLE IF NOT EXISTS subscriptions (
+                id SERIAL PRIMARY KEY,
+                tenant_id INTEGER NOT NULL UNIQUE REFERENCES tenants(id) ON DELETE CASCADE,
+                plan_id INTEGER NOT NULL REFERENCES plans(id),
+                stripe_subscription_id VARCHAR(100),
+                stripe_customer_id VARCHAR(100),
+                status VARCHAR(30) NOT NULL DEFAULT 'trialing',
+                current_period_start TIMESTAMPTZ,
+                current_period_end TIMESTAMPTZ,
+                trial_ends_at TIMESTAMPTZ,
+                cancel_at_period_end BOOLEAN DEFAULT false,
+                canceled_at TIMESTAMPTZ,
+                last_invoice_amount_cop NUMERIC(18,2),
+                last_invoice_paid_at TIMESTAMPTZ,
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            );
+            CREATE INDEX IF NOT EXISTS idx_subscriptions_status ON subscriptions(status);
+            CREATE INDEX IF NOT EXISTS idx_subscriptions_stripe_sub ON subscriptions(stripe_subscription_id);
+
+            -- subscription_payments (renombrado para no chocar con la tabla 'payments' del módulo de cobros de facturas)
+            CREATE TABLE IF NOT EXISTS subscription_payments (
+                id SERIAL PRIMARY KEY,
+                tenant_id INTEGER NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+                subscription_id INTEGER REFERENCES subscriptions(id) ON DELETE SET NULL,
+                stripe_invoice_id VARCHAR(100),
+                stripe_charge_id VARCHAR(100),
+                stripe_payment_intent_id VARCHAR(100),
+                amount_cop NUMERIC(18,2) NOT NULL,
+                currency VARCHAR(10) DEFAULT 'cop',
+                status VARCHAR(30) NOT NULL,
+                paid_at TIMESTAMPTZ,
+                receipt_url TEXT,
+                hosted_invoice_url TEXT,
+                failure_message TEXT,
+                created_at TIMESTAMPTZ DEFAULT NOW()
+            );
+            CREATE INDEX IF NOT EXISTS idx_subpay_tenant ON subscription_payments(tenant_id, created_at DESC);
+            CREATE INDEX IF NOT EXISTS idx_subpay_stripe_invoice ON subscription_payments(stripe_invoice_id);
+        `
+    },
+    {
+        name: 'extend_wa_sessions_for_evolution',
+        sql: `
+            ALTER TABLE wa_sessions ADD COLUMN IF NOT EXISTS provider VARCHAR(20) DEFAULT 'baileys';
+            ALTER TABLE wa_sessions ADD COLUMN IF NOT EXISTS evolution_instance_name VARCHAR(100);
+            ALTER TABLE wa_sessions ADD COLUMN IF NOT EXISTS evolution_api_key VARCHAR(255);
+            ALTER TABLE wa_sessions ADD COLUMN IF NOT EXISTS evolution_webhook_url TEXT;
+            ALTER TABLE wa_sessions ADD COLUMN IF NOT EXISTS bot_enabled BOOLEAN DEFAULT false;
+            ALTER TABLE wa_sessions ADD COLUMN IF NOT EXISTS bot_invoice_default_client TEXT;
+            CREATE INDEX IF NOT EXISTS idx_wa_sessions_provider ON wa_sessions(tenant_id, provider);
+        `
+    },
+    {
+        // Asegura columnas que el código de recibos de cobro/egresos ya usaba pero que
+        // dependían de ALTERs ad-hoc fuera de este archivo (idempotente).
+        name: 'ensure_payment_receipt_and_ap_application_columns',
+        sql: `
+            ALTER TABLE payment_receipts ADD COLUMN IF NOT EXISTS retefuente_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipts ADD COLUMN IF NOT EXISTS reteiva_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipts ADD COLUMN IF NOT EXISTS reteica_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipts ADD COLUMN IF NOT EXISTS impoconsumo_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipts ADD COLUMN IF NOT EXISTS gross_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipt_invoices ADD COLUMN IF NOT EXISTS retefuente_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipt_invoices ADD COLUMN IF NOT EXISTS reteiva_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipt_invoices ADD COLUMN IF NOT EXISTS reteica_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipt_invoices ADD COLUMN IF NOT EXISTS impoconsumo_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS gross_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS withholding_source_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS withholding_ica_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS withholding_vat_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS withholding_source_code VARCHAR(20);
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS withholding_ica_code VARCHAR(20);
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS withholding_vat_code VARCHAR(20);
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS payment_methods JSONB;
+        `
+    },
+    {
+        // "Otros gastos" descontados por el cliente al pagar (o pagados por la empresa al pagar a un
+        // proveedor): se contabilizan como gasto no operacional (clase 53, default 539595).
+        name: 'add_other_expenses_columns',
+        sql: `
+            ALTER TABLE accounting_settings ADD COLUMN IF NOT EXISTS other_expenses_code VARCHAR(20);
+            UPDATE accounting_settings SET other_expenses_code = '539595' WHERE other_expenses_code IS NULL OR other_expenses_code = '';
+            ALTER TABLE payment_receipts ADD COLUMN IF NOT EXISTS other_expenses_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE payment_receipt_invoices ADD COLUMN IF NOT EXISTS other_expenses_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS other_expenses_amount NUMERIC(18,2) DEFAULT 0;
+            ALTER TABLE accounts_payable_applications ADD COLUMN IF NOT EXISTS other_expenses_code VARCHAR(20);
+        `
+    },
+    {
+        // Impoconsumo sufrido (descontado por el cliente al pagar): por defecto se trata como
+        // anticipo de impuestos (135595 — "Otros" de 1355). Configurable.
+        name: 'add_impoconsumo_suffered_code',
+        sql: `
+            ALTER TABLE accounting_settings ADD COLUMN IF NOT EXISTS impoconsumo_suffered_code VARCHAR(20);
+            UPDATE accounting_settings SET impoconsumo_suffered_code = '135595' WHERE impoconsumo_suffered_code IS NULL OR impoconsumo_suffered_code = '';
+        `
+    },
+    {
+        // Cuenta a la que se imputa "Otros gastos" por línea de factura en el recibo de cobro.
+        name: 'add_other_expenses_code_to_receipt_invoices',
+        sql: `
+            ALTER TABLE payment_receipt_invoices ADD COLUMN IF NOT EXISTS other_expenses_code VARCHAR(20);
+        `
+    },
+    {
+        // Vibe-coding del módulo Comercial: sitios web / tiendas online generados por IA por tenant.
+        name: 'add_tenant_sites_table',
+        sql: `
+            CREATE TABLE IF NOT EXISTS tenant_sites (
+                id SERIAL PRIMARY KEY,
+                tenant_id INTEGER NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+                name VARCHAR(255),
+                kind VARCHAR(20) DEFAULT 'tienda',
+                prompt TEXT,
+                html_content TEXT,
+                version INTEGER DEFAULT 1,
+                parent_id INTEGER,
+                status VARCHAR(20) DEFAULT 'borrador',
+                published_url VARCHAR(500),
+                custom_domain VARCHAR(255),
+                subdomain VARCHAR(100),
+                created_by INTEGER,
+                created_at TIMESTAMPTZ DEFAULT NOW(),
+                updated_at TIMESTAMPTZ DEFAULT NOW()
+            );
+            CREATE INDEX IF NOT EXISTS idx_tenant_sites_tenant ON tenant_sites(tenant_id);
+        `
+    },
+    {
+        // Módulo POS (Punto de Venta) — tablas pos_sales / pos_sale_items.
+        // Va al final: necesita tenants, users, products, third_parties, cash_sessions y journal_entries.
+        name: 'create_pos_tables',
+        sql: posTablesSQL
+    },
+    {
+        // Consumo de IA por tenant (ai_usage_events) + columna ai_credits_extra en tenants.
+        // El cupo mensual por plan vive en código (aiCreditsService.AI_MONTHLY_CREDITS);
+        // el "usado" se calcula sumando credits_charged del mes actual.
+        name: 'create_ai_usage_tables',
+        sql: aiUsageTablesSQL
+    },
+    {
+        // Hard-block por suscripción + matriz plan→módulos + grandfather de tenants existentes.
+        name: 'plan_gating_028',
+        sql: planGatingSQL
+    },
+    {
+        // Flag por tienda online: si está en true, el catálogo y carrito se conectan al POS.
+        // El HTML generado por la IA recibe un widget inyectado que consume el catálogo
+        // público y postea pedidos como pos_sales con channel='ecommerce'.
+        name: 'tenant_sites_sync_pos_029',
+        sql: `ALTER TABLE tenant_sites ADD COLUMN IF NOT EXISTS sync_pos BOOLEAN DEFAULT false;`
+    },
+    {
+        // Precio + Stripe Price ID para facturación anual (20% off del mensual×12).
+        name: 'plans_yearly_billing_030',
+        sql: `
+            ALTER TABLE plans ADD COLUMN IF NOT EXISTS stripe_price_id_yearly VARCHAR(100);
+            ALTER TABLE plans ADD COLUMN IF NOT EXISTS price_cop_yearly NUMERIC(18,2);
+        `
+    },
+    {
+        // Matriz plan→módulos alineada con la oferta del landing (POS/CRM/WhatsApp en INICIA;
+        // facturación electrónica solo desde PYME; etc.). Idempotente.
+        name: 'plan_modules_landing_fix_031',
+        sql: planModulesLandingFixSQL
+    },
+    {
+        // Columnas para premios "desbloquea-módulos" de la ruleta (bonus_modules + expiración).
+        name: 'subscription_bonus_modules_032',
+        sql: subscriptionBonusModulesSQL
+    },
+    {
+        // Órdenes de ecommerce pendientes de pago en Stripe Checkout (pre-pos_sales).
+        name: 'ecommerce_pending_orders_033',
+        sql: ecommercePendingOrdersSQL
+    },
+    {
+        // Columnas para recuperación de contraseña (hash del token + expiración).
+        name: 'password_reset_columns_034',
+        sql: passwordResetColumnsSQL
+    },
+    {
+        // Credenciales BYOK de IA por tenant (OpenAI/Anthropic/Gemini) — chatbot propio.
+        name: 'tenant_ai_credentials_035',
+        sql: tenantAiCredentialsSQL
+    },
+    {
+        // Permite que un humano tome control de una conversación de WhatsApp
+        // y silencie al bot mientras él responde.
+        name: 'wa_conversation_human_handling_036',
+        sql: waConversationHumanHandlingSQL
+    },
+    {
+        // Habilita provider='crumi' (créditos gratis) en tenant_ai_credentials y
+        // permite api_key_encrypted NULL para ese caso.
+        name: 'tenant_ai_credentials_crumi_provider_037',
+        sql: tenantAiCredentialsCrumiProviderSQL
+    },
+    {
+        // Toggle por sitio: si chatbot_enabled, el HTML publicado lleva inyectado el
+        // <script src="/chatbot.js"> que muestra el bubble flotante en el sitio.
+        name: 'tenant_sites_chatbot_enabled_038',
+        sql: `ALTER TABLE tenant_sites ADD COLUMN IF NOT EXISTS chatbot_enabled BOOLEAN DEFAULT FALSE;`
+    },
+    {
+        // Flag por línea de factura de compra: si true, la línea suma su line_total al
+        // header pero NO genera base gravable / IVA / retenciones. Útil para conceptos
+        // no gravables (fianza, recargo financiero, valor reembolsable).
+        name: 'add_no_taxable_base_to_ap_lines',
+        sql: `ALTER TABLE accounts_payable_lines ADD COLUMN IF NOT EXISTS no_taxable_base BOOLEAN DEFAULT FALSE;`
+    },
+    {
+        name: 'create_wa_invoice_drafts',
+        sql: waInvoiceDraftsSQL
+    },
+    {
+        name: 'create_dian_inbox',
+        sql: dianInboxSQL
+    },
+    {
+        name: 'create_dian_inbox_config',
+        sql: dianInboxConfigSQL
     }
 ];
 

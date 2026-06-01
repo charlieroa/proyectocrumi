@@ -20,6 +20,9 @@ export interface ErpModuleItem {
   visibleInSidebar?: boolean;
   requiresMainTenant?: boolean;
   requiresAccountantMode?: boolean;
+  // Feature del plan (subscription.features.modules[]) requerida para ver el ítem.
+  // Si no se define, el ítem es visible en todos los planes pagos.
+  featureKey?: string;
 }
 
 export interface ErpDomain {
@@ -55,18 +58,22 @@ export const ERP_MODULE_MAP: ErpDomain[] = [
   {
     id: 'comercial',
     label: 'Comercial',
-    description: 'CRM, clientes, cotizaciones, facturas y mensajeria.',
+    description: 'Sitio/tienda con IA, CRM, clientes, cotizaciones, facturas y mensajería.',
     order: 1,
     path: '/comercial',
     icon: 'ri-briefcase-4-line',
-    disabled: true,
+    disabled: false,
     items: [
+      // Mismo patrón que Contabilidad / Nómina: en el sidebar solo aparece UN ítem ("Comercial")
+      // que navega al hub interno (/comercial-hub) — desde ahí se acceden los sub-módulos con tiles.
       { id: 'comercial-hub', label: 'Comercial', path: '/comercial-hub', icon: 'ri-briefcase-4-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'comercial-embudo', label: 'Embudo de ventas', path: '/comercial-hub/embudo', icon: 'ri-funnel-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'comercial-cotizaciones', label: 'Cotizaciones', path: '/comercial-hub/cotizaciones', icon: 'ri-file-list-3-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'comercial-facturacion', label: 'Facturas de venta', path: '/comercial-hub/facturacion', icon: 'ri-bill-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'terceros-hub', label: 'Terceros', path: '/terceros-hub', icon: 'ri-contacts-book-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'crm-leads-legacy', label: 'CRM (clásico)', path: '/crm', icon: 'ri-customer-service-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'comercial-embudo', label: 'Embudo de ventas', path: '/comercial-hub/embudo', icon: 'ri-funnel-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'crm' },
+      { id: 'comercial-cotizaciones', label: 'Cotizaciones', path: '/comercial-hub/cotizaciones', icon: 'ri-file-list-3-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'comercial-facturacion', label: 'Facturas de venta', path: '/comercial-hub/facturacion', icon: 'ri-bill-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'fe' },
+      { id: 'comercial-sitio', label: 'Sitio web / Tienda', path: '/comercial-hub/sitio', icon: 'ri-magic-line', roles: [1, 4, 99], chatEnabled: false, status: 'active', visibleInSidebar: false, featureKey: 'site_builder' },
+      { id: 'comercial-pos', label: 'Punto de venta', path: '/contabilidad/pos', icon: 'ri-store-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true, featureKey: 'pos' },
+      { id: 'terceros-hub', label: 'Terceros', path: '/terceros-hub', icon: 'ri-contacts-book-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'crm-leads-legacy', label: 'CRM (clásico)', path: '/crm', icon: 'ri-customer-service-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'crm' },
     ],
   },
   {
@@ -78,10 +85,13 @@ export const ERP_MODULE_MAP: ErpDomain[] = [
     icon: 'ri-calculator-line',
     items: [
       { id: 'accounting-hub', label: 'Contabilidad', path: '/contabilidad', icon: 'ri-book-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
+      // POS no es una entrada propia del sidebar: se accede desde Inventario (Kardex) dentro de Contabilidad.
+      { id: 'accounting-pos', label: 'Punto de venta', path: '/contabilidad/pos', icon: 'ri-store-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'pos' },
       { id: 'accounting-puc', label: 'Plan de cuentas (PUC)', path: '/contabilidad/puc', icon: 'ri-list-check-2', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-terceros', label: 'Terceros', path: '/terceros-hub', icon: 'ri-contacts-book-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-capture', label: 'Capturar asiento', path: '/contabilidad/capturar', icon: 'ri-pencil-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-compras', label: 'Facturas de compra', path: '/contabilidad/compras', icon: 'ri-shopping-cart-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'accounting-bandeja-dian', label: 'Bandeja DIAN', path: '/contabilidad/bandeja-dian', icon: 'ri-inbox-archive-line', roles: [1, 4, 99], chatEnabled: false, status: 'active', visibleInSidebar: true },
       { id: 'accounting-ds', label: 'Documentos soporte', path: '/contabilidad/documentos-soporte', icon: 'ri-file-text-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-pagos', label: 'Pagos a proveedores', path: '/contabilidad/pagos', icon: 'ri-bank-card-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-cobros', label: 'Cobros de clientes', path: '/contabilidad/cobros', icon: 'ri-hand-coin-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
@@ -89,30 +99,30 @@ export const ERP_MODULE_MAP: ErpDomain[] = [
       { id: 'accounting-cost-centers', label: 'Centros de costo', path: '/contabilidad/centros-costo', icon: 'ri-pie-chart-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-assets', label: 'Activos fijos', path: '/contabilidad/activos-fijos', icon: 'ri-building-3-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-templates', label: 'Plantillas asientos', path: '/contabilidad/plantillas', icon: 'ri-file-copy-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
-      { id: 'accounting-exogena', label: 'Información exógena', path: '/contabilidad/exogena', icon: 'ri-file-download-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'accounting-exogena', label: 'Información exógena', path: '/contabilidad/exogena', icon: 'ri-file-download-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'exogena' },
       { id: 'accounting-queries', label: 'Consultas y libros', path: '/contabilidad/consultas', icon: 'ri-search-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
       { id: 'accounting-taxes', label: 'Impuestos', path: '/contabilidad/impuestos', icon: 'ri-percent-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
-      { id: 'accounting-dian', label: 'Estado DIAN', path: '/contabilidad/dian', icon: 'ri-government-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'accounting-dian', label: 'Estado DIAN', path: '/contabilidad/dian', icon: 'ri-government-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'fe' },
       { id: 'accounting-banks', label: 'Bancos', path: '/contabilidad/bancos', icon: 'ri-bank-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
-      { id: 'config-fe-wizard', label: 'Configurar FE (asistente)', path: '/contabilidad/configurar-fe', icon: 'ri-magic-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
-      { id: 'fe-advanced', label: 'Config. avanzada DIAN', path: '/contable/alegra', icon: 'ri-settings-3-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
+      { id: 'config-fe-wizard', label: 'Configurar FE (asistente)', path: '/contabilidad/configurar-fe', icon: 'ri-magic-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'fe' },
+      { id: 'fe-advanced', label: 'Config. avanzada DIAN', path: '/contable/alegra', icon: 'ri-settings-3-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'fe' },
     ],
   },
   {
     id: 'nomina',
-    label: 'Nomina',
-    description: 'Empleados, liquidacion, nomina electronica, PILA.',
+    label: 'Nómina',
+    description: 'Empleados, liquidación, nómina electrónica, PILA.',
     order: 3,
-    path: '/nomina/workspace',
+    path: '/nomina-hub',
     icon: 'ri-money-dollar-box-line',
-    disabled: true,
+    disabled: false,
     items: [
-      { id: 'nomina-hub', label: 'Nómina', path: '/nomina-hub', icon: 'ri-money-dollar-box-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'nomina-empleados', label: 'Empleados', path: '/nomina-hub/empleados', icon: 'ri-team-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'nomina-liquidar', label: 'Liquidar período', path: '/nomina-hub/liquidar', icon: 'ri-calculator-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'nomina-periodos', label: 'Períodos', path: '/nomina-hub/periodos', icon: 'ri-calendar-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'nomina-ne', label: 'Nómina electrónica', path: '/nomina-hub/nomina-electronica', icon: 'ri-government-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
-      { id: 'nomina-pila', label: 'PILA', path: '/nomina-hub/pila', icon: 'ri-heart-pulse-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true },
+      { id: 'nomina-hub', label: 'Nómina', path: '/nomina-hub', icon: 'ri-money-dollar-box-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: true, featureKey: 'nomina' },
+      { id: 'nomina-empleados', label: 'Empleados', path: '/nomina-hub/empleados', icon: 'ri-team-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'nomina' },
+      { id: 'nomina-liquidar', label: 'Liquidar período', path: '/nomina-hub/liquidar', icon: 'ri-calculator-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'nomina' },
+      { id: 'nomina-periodos', label: 'Períodos', path: '/nomina-hub/periodos', icon: 'ri-calendar-2-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'nomina' },
+      { id: 'nomina-ne', label: 'Nómina electrónica', path: '/nomina-hub/nomina-electronica', icon: 'ri-government-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'fe' },
+      { id: 'nomina-pila', label: 'PILA', path: '/nomina-hub/pila', icon: 'ri-heart-pulse-line', roles: [1, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false, featureKey: 'nomina' },
       { id: 'mi-portal', label: 'Mi Portal', path: '/mi-portal', icon: 'ri-user-star-line', roles: [1, 3, 4, 99], chatEnabled: true, status: 'active', visibleInSidebar: false },
     ],
   },
@@ -188,10 +198,14 @@ export const getDomainsForRole = (roleId: AppRoleId | null | undefined): ErpDoma
     .sort((a, b) => a.order - b.order);
 };
 
+// Dominios que NO se muestran como módulos en el sidebar (aún tienen rutas accesibles por URL).
+const SIDEBAR_HIDDEN_DOMAINS: ErpDomainId[] = ['legal'];
+
 /** Domains that appear as collapsible modules in the sidebar (order < 99) */
 export const getSidebarDomains = (roleId: AppRoleId | null | undefined, activeModules?: string[]): ErpDomain[] => {
   return getDomainsForRole(roleId).filter((d) => {
     if (d.order >= 99) return false;
+    if (SIDEBAR_HIDDEN_DOMAINS.includes(d.id)) return false;
     // Only 'contable' is gated by active_modules; everything else always visible
     if (activeModules && d.id === 'contable') {
       return activeModules.includes('contable');

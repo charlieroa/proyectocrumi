@@ -5,9 +5,11 @@ import Captura from './sections/Captura';
 import Notas from './sections/Notas';
 import Consultas from './sections/Consultas';
 import Impuestos from './sections/Impuestos';
+import ResumenFacturacion from './sections/ResumenFacturacion';
 import DianStatus from './sections/DianStatus';
 import ConfigFacturacion from './sections/ConfigFacturacion';
 import Compras from './sections/Compras';
+import BandejaDIAN from './sections/BandejaDIAN';
 import DocumentosSoporte from './sections/DocumentosSoporte';
 import Pagos from './sections/Pagos';
 import Cobros from './sections/Cobros';
@@ -20,12 +22,14 @@ import Puc from './sections/Puc';
 import SoporteVenta from './sections/SoporteVenta';
 import DocumentoIngreso from './sections/DocumentoIngreso';
 import ProductosServicios from './sections/ProductosServicios';
+import PuntoDeVenta from './sections/PuntoDeVenta';
 import RemisionesComp from './sections/Remisiones';
 import EmpresaConfig from './sections/EmpresaConfig';
 import FacturacionElectronicaConfig from './sections/FacturacionElectronicaConfig';
 import ContabilidadMaestraConfig from './sections/ContabilidadMaestraConfig';
 import TercerosConfig from './sections/TercerosConfig';
 import CentrosCosto from './sections/CentrosCosto';
+import Periodos from './sections/Periodos';
 import FacturaTab from '../income/SalesInvoice/tabs/FacturaTab';
 import type { DocumentConfig } from '../income/SalesInvoice/Create';
 import FacturaVentaLista from '../income/SalesInvoice/FacturaVentaLista';
@@ -64,6 +68,12 @@ export const ImpuestosPage: React.FC = () => (
   </SectionPage>
 );
 
+export const ResumenFacturacionPage: React.FC = () => (
+  <SectionPage title="Resumen de facturación" subtitle="Consolidado por mes/cliente y alarmas de cartera y facturación" icon="ri-line-chart-line" iconColor="primary" parentTab="reportes">
+    <ResumenFacturacion />
+  </SectionPage>
+);
+
 export const DianStatusPage: React.FC = () => (
   <SectionPage title="Estado DIAN" subtitle="Facturación y nómina electrónica (solo monitoreo)" icon="ri-government-line" iconColor="dark" parentTab="reportes">
     <DianStatus />
@@ -79,6 +89,12 @@ export const ConfigFacturacionPage: React.FC = () => (
 export const ComprasPage: React.FC = () => (
   <SectionPage title="Facturas de compra" subtitle="Registra facturas que recibes de proveedores" icon="ri-shopping-cart-2-line" iconColor="warning" parentTab="compras">
     <Compras />
+  </SectionPage>
+);
+
+export const BandejaDIANPage: React.FC = () => (
+  <SectionPage title="Bandeja DIAN" subtitle="Sube XML/ZIP de facturas y deja que la IA las cause automáticamente" icon="ri-inbox-archive-line" iconColor="primary" parentTab="compras">
+    <BandejaDIAN />
   </SectionPage>
 );
 
@@ -182,6 +198,18 @@ export const CentrosCostoPage: React.FC = () => (
   </SectionPage>
 );
 
+export const PeriodosPage: React.FC = () => (
+  <SectionPage
+    title="Períodos contables"
+    subtitle="Cerrar y reabrir meses para bloquear capturas en períodos consolidados"
+    icon="ri-calendar-check-line"
+    iconColor="primary"
+    parentTab="configuracion"
+  >
+    <Periodos />
+  </SectionPage>
+);
+
 const FACTURA_VENTA_CONFIG: DocumentConfig = {
   title: 'Factura de venta',
   subtitle: 'Documento fiscal electrónico DIAN',
@@ -199,6 +227,18 @@ export const FacturaVentaPage: React.FC = () => (
     parentTab="ventas"
   >
     <FacturaTab config={FACTURA_VENTA_CONFIG} />
+  </SectionPage>
+);
+
+export const PuntoDeVentaPage: React.FC = () => (
+  <SectionPage
+    title="Punto de venta"
+    subtitle="Caja rápida: vende, cobra e imprime el ticket"
+    icon="ri-store-2-line"
+    iconColor="success"
+    parentTab="ventas"
+  >
+    <PuntoDeVenta />
   </SectionPage>
 );
 

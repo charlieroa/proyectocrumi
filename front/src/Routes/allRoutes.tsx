@@ -1,9 +1,16 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
+
+// Redirige /ingresos/factura/:id/editar → /contabilidad/factura-venta?editar=:id
+// (la lista intercepta el query param y abre el offcanvas en modo edición)
+const RedirectEditFactura: React.FC = () => {
+  const { id } = useParams();
+  return <Navigate to={`/contabilidad/factura-venta?editar=${encodeURIComponent(id || '')}`} replace />;
+};
 import ModulePageWrapper from '../Components/Common/ModulePageWrapper';
 
 import ChatView from '../Components/Chat/ChatView';
-import { LoginRedirect, RegisterRedirect } from '../Components/Auth/AuthRedirects';
+import LoginPage from '../pages/Authentication/LoginPage';
 
 import Calendar from '../pages/Calendar';
 import DomainWorkspace from '../pages/Erp/DomainWorkspace';
@@ -29,13 +36,13 @@ import EmployeeKanban from '../pages/Tasks/EmployeeKanban';
 import TaskDashboard from '../pages/Tasks/TaskDashboard';
 import KanbanBoard from '../pages/Tasks/KanbanBoard';
 import ContabilidadHub from '../pages/Contabilidad';
-import { CapturaPage, NotasPage, ConsultasPage, ImpuestosPage as ImpuestosContablePage, DianStatusPage, ConfigFacturacionPage, ComprasPage, DocumentosSoportePage, PagosPage, CobrosPage, BancosPage, ExogenaPage, KardexPage, ActivosFijosPage, PlantillasAsientoPage, PucPage, SoporteVentaPage, DocumentoIngresoPage, ProductosServiciosPage, RemisionesPage, EmpresaConfigPage, FacturacionElectronicaConfigPage, ContabilidadMaestraConfigPage, TercerosConfigPage, CentrosCostoPage, FacturaVentaPage, FacturaVentaListaPage } from '../pages/Contabilidad/pages';
+import { CapturaPage, NotasPage, ConsultasPage, ImpuestosPage as ImpuestosContablePage, ResumenFacturacionPage, DianStatusPage, ConfigFacturacionPage, ComprasPage, BandejaDIANPage, DocumentosSoportePage, PagosPage, CobrosPage, BancosPage, ExogenaPage, KardexPage, ActivosFijosPage, PlantillasAsientoPage, PucPage, SoporteVentaPage, DocumentoIngresoPage, ProductosServiciosPage, PuntoDeVentaPage, RemisionesPage, EmpresaConfigPage, FacturacionElectronicaConfigPage, ContabilidadMaestraConfigPage, TercerosConfigPage, CentrosCostoPage, PeriodosPage, FacturaVentaPage, FacturaVentaListaPage } from '../pages/Contabilidad/pages';
 import TercerosHub from '../pages/TercerosHub';
 import { ListaPage as TercerosLista, NuevoPage as TercerosNuevo, DetallePage as TercerosDetalle, EditarPage as TercerosEditar } from '../pages/TercerosHub/pages';
 import NominaHub from '../pages/NominaHub';
 import { EmpleadosPage as NominaEmpleados, LiquidarPage as NominaLiquidar, PeriodosPage as NominaPeriodos, NominaElectronicaPage, PilaPage as NominaPila, ReportesPage as NominaReportes } from '../pages/NominaHub/pages';
 import ComercialHub from '../pages/ComercialHub';
-import { EmbudoPage as ComercialEmbudo, OportunidadesPage as ComercialOportunidades, CotizacionesPage as ComercialCotizaciones, FacturacionPage as ComercialFacturacion, ClientesPage as ComercialClientes } from '../pages/ComercialHub/pages';
+import { EmbudoPage as ComercialEmbudo, OportunidadesPage as ComercialOportunidades, CotizacionesPage as ComercialCotizaciones, FacturacionPage as ComercialFacturacion, ClientesPage as ComercialClientes, SitioWebPage as ComercialSitioWeb, ChatbotIAPage as ComercialChatbotIA } from '../pages/ComercialHub/pages';
 import ImpuestosPage from '../pages/Impuestos';
 import TercerosPage from '../pages/Terceros';
 import CotizacionesPage from '../pages/Cotizaciones';
@@ -59,6 +66,14 @@ import AllUsersPage from '../pages/Crm/AllUsersPage';
 import AdminKpisPage from '../pages/AdminKpis';
 import LandingPage from '../pages/Landing';
 import ContabilidadProductoPage from '../pages/Producto/Contabilidad';
+import BillingPage from '../pages/Billing';
+import BillingSuccess from '../pages/Billing/Success';
+import BillingRequired from '../pages/Billing/Required';
+import BillingUpgrade from '../pages/Billing/UpgradeRequired';
+import SuperadminDashboard from '../pages/Superadmin';
+import ConfiguracionHub from '../pages/Configuracion';
+import WhatsappConexion from '../pages/Configuracion/WhatsappConexion';
+import FeatureGuard from '../Layouts/CrumiLayout/FeatureGuard';
 
 const semiPublicRoutes = [
   { path: '/dashboard', component: <ChatView /> },
@@ -90,6 +105,25 @@ const authProtectedRoutes = [
   { path: '/administrativo/conexiones', component: <ModulePageWrapper><ConexionesExternasPage /></ModulePageWrapper> },
 
   { path: '/onboarding', component: <ModulePageWrapper><OnboardingPage /></ModulePageWrapper> },
+
+  // Hub de Configuración: muestra todo lo que se puede activar/configurar
+  { path: '/configuracion', component: <ModulePageWrapper><ConfiguracionHub /></ModulePageWrapper> },
+  // Antes /configuracion/whatsapp tenía su propia página; ahora el QR vive
+  // inline en /contabilidad?tab=configuracion. Redirigimos para no romper links.
+  { path: '/configuracion/whatsapp', component: <Navigate to="/contabilidad?tab=configuracion" replace /> },
+
+  // Billing (Stripe) — accesible para todo tenant logueado
+  { path: '/billing', component: <ModulePageWrapper><BillingPage /></ModulePageWrapper> },
+  { path: '/billing/success', component: <ModulePageWrapper><BillingSuccess /></ModulePageWrapper> },
+  { path: '/billing/cancel', component: <Navigate to="/billing" replace /> },
+  // Hard-block: tenant sin sub activa cae aquí.
+  { path: '/billing/required', component: <ModulePageWrapper><BillingRequired /></ModulePageWrapper> },
+  // 403 cuando el plan no incluye el módulo solicitado.
+  { path: '/billing/upgrade', component: <ModulePageWrapper><BillingUpgrade /></ModulePageWrapper> },
+
+  // Superadmin (rol 99) — el backend protege con superadminMiddleware
+  { path: '/superadmin', component: <ModulePageWrapper><SuperadminDashboard /></ModulePageWrapper> },
+
   // Rutas viejas redirigen a las nuevas en /contabilidad/*
   { path: '/ingresos/documentos', component: <Navigate to="/contabilidad/factura-venta" replace /> },
   { path: '/ingresos/factura-venta', component: <Navigate to="/contabilidad/factura-venta" replace /> },
@@ -117,17 +151,20 @@ const authProtectedRoutes = [
   { path: '/contabilidad/consultas', component: <ModulePageWrapper><ConsultasPage /></ModulePageWrapper> },
   { path: '/contabilidad/notas/:kind', component: <ModulePageWrapper><NotasPage /></ModulePageWrapper> },
   { path: '/contabilidad/impuestos', component: <ModulePageWrapper><ImpuestosContablePage /></ModulePageWrapper> },
-  { path: '/contabilidad/dian', component: <ModulePageWrapper><DianStatusPage /></ModulePageWrapper> },
-  { path: '/contabilidad/configurar-fe', component: <ModulePageWrapper><ConfigFacturacionPage /></ModulePageWrapper> },
+  { path: '/contabilidad/resumen-facturacion', component: <ModulePageWrapper><ResumenFacturacionPage /></ModulePageWrapper> },
+  { path: '/contabilidad/dian', component: <FeatureGuard feature="fe"><ModulePageWrapper><DianStatusPage /></ModulePageWrapper></FeatureGuard> },
+  { path: '/contabilidad/configurar-fe', component: <FeatureGuard feature="fe"><ModulePageWrapper><ConfigFacturacionPage /></ModulePageWrapper></FeatureGuard> },
   { path: '/contabilidad/bancos', component: <ModulePageWrapper><BancosPage /></ModulePageWrapper> },
   { path: '/contabilidad/compras', component: <ModulePageWrapper><ComprasPage /></ModulePageWrapper> },
+  { path: '/contabilidad/bandeja-dian', component: <ModulePageWrapper><BandejaDIANPage /></ModulePageWrapper> },
   { path: '/contabilidad/documentos-soporte', component: <ModulePageWrapper><DocumentosSoportePage /></ModulePageWrapper> },
   { path: '/contabilidad/pagos', component: <ModulePageWrapper><PagosPage /></ModulePageWrapper> },
   { path: '/contabilidad/cobros', component: <ModulePageWrapper><CobrosPage /></ModulePageWrapper> },
-  { path: '/contabilidad/exogena', component: <ModulePageWrapper><ExogenaPage /></ModulePageWrapper> },
+  { path: '/contabilidad/exogena', component: <FeatureGuard feature="exogena"><ModulePageWrapper><ExogenaPage /></ModulePageWrapper></FeatureGuard> },
   { path: '/contabilidad/kardex', component: <ModulePageWrapper><KardexPage /></ModulePageWrapper> },
   { path: '/contabilidad/activos-fijos', component: <ModulePageWrapper><ActivosFijosPage /></ModulePageWrapper> },
   { path: '/contabilidad/plantillas', component: <ModulePageWrapper><PlantillasAsientoPage /></ModulePageWrapper> },
+  { path: '/contabilidad/periodos', component: <ModulePageWrapper><PeriodosPage /></ModulePageWrapper> },
   { path: '/contabilidad/puc', component: <ModulePageWrapper><PucPage /></ModulePageWrapper> },
   { path: '/contabilidad/soporte-venta', component: <ModulePageWrapper><SoporteVentaPage /></ModulePageWrapper> },
   { path: '/contabilidad/recibos-caja', component: <ModulePageWrapper><CobrosPage /></ModulePageWrapper> },
@@ -135,9 +172,12 @@ const authProtectedRoutes = [
   { path: '/contabilidad/productos-servicios', component: <ModulePageWrapper><ProductosServiciosPage /></ModulePageWrapper> },
   { path: '/contabilidad/centros-costo', component: <ModulePageWrapper><CentrosCostoPage /></ModulePageWrapper> },
   { path: '/contabilidad/factura-venta', component: <ModulePageWrapper><FacturaVentaListaPage /></ModulePageWrapper> },
+  { path: '/contabilidad/pos', component: <FeatureGuard feature="pos"><ModulePageWrapper><PuntoDeVentaPage /></ModulePageWrapper></FeatureGuard> },
   { path: '/contabilidad/factura-venta/crear', component: <Navigate to="/contabilidad/factura-venta?nuevo=1" replace /> },
   { path: '/ingresos/factura-venta/crear', component: <Navigate to="/contabilidad/factura-venta/crear" replace /> },
   { path: '/ingresos/nuevo', component: <Navigate to="/contabilidad/factura-venta/crear" replace /> },
+  { path: '/ingresos/factura/:id/editar', component: <RedirectEditFactura /> },
+  { path: '/contabilidad/factura-venta/:id/editar', component: <RedirectEditFactura /> },
   { path: '/contabilidad/remisiones', component: <ModulePageWrapper><RemisionesPage /></ModulePageWrapper> },
   // Configuración (secciones migradas desde /settings?tab=N a páginas independientes)
   { path: '/contabilidad/config/empresa', component: <ModulePageWrapper><EmpresaConfigPage /></ModulePageWrapper> },
@@ -152,13 +192,13 @@ const authProtectedRoutes = [
   { path: '/terceros-hub/:id/editar', component: <ModulePageWrapper><TercerosEditar /></ModulePageWrapper> },
   { path: '/terceros-hub/:id', component: <ModulePageWrapper><TercerosDetalle /></ModulePageWrapper> },
 
-  { path: '/nomina-hub', component: <ModulePageWrapper><NominaHub /></ModulePageWrapper> },
-  { path: '/nomina-hub/empleados', component: <ModulePageWrapper><NominaEmpleados /></ModulePageWrapper> },
-  { path: '/nomina-hub/liquidar', component: <ModulePageWrapper><NominaLiquidar /></ModulePageWrapper> },
-  { path: '/nomina-hub/periodos', component: <ModulePageWrapper><NominaPeriodos /></ModulePageWrapper> },
-  { path: '/nomina-hub/nomina-electronica', component: <ModulePageWrapper><NominaElectronicaPage /></ModulePageWrapper> },
-  { path: '/nomina-hub/pila', component: <ModulePageWrapper><NominaPila /></ModulePageWrapper> },
-  { path: '/nomina-hub/reportes', component: <ModulePageWrapper><NominaReportes /></ModulePageWrapper> },
+  { path: '/nomina-hub', component: <FeatureGuard feature="nomina-basica"><ModulePageWrapper><NominaHub /></ModulePageWrapper></FeatureGuard> },
+  { path: '/nomina-hub/empleados', component: <FeatureGuard feature="nomina-basica"><ModulePageWrapper><NominaEmpleados /></ModulePageWrapper></FeatureGuard> },
+  { path: '/nomina-hub/liquidar', component: <FeatureGuard feature="nomina-basica"><ModulePageWrapper><NominaLiquidar /></ModulePageWrapper></FeatureGuard> },
+  { path: '/nomina-hub/periodos', component: <FeatureGuard feature="nomina-basica"><ModulePageWrapper><NominaPeriodos /></ModulePageWrapper></FeatureGuard> },
+  { path: '/nomina-hub/nomina-electronica', component: <FeatureGuard feature="fe"><ModulePageWrapper><NominaElectronicaPage /></ModulePageWrapper></FeatureGuard> },
+  { path: '/nomina-hub/pila', component: <FeatureGuard feature="nomina-basica"><ModulePageWrapper><NominaPila /></ModulePageWrapper></FeatureGuard> },
+  { path: '/nomina-hub/reportes', component: <FeatureGuard feature="nomina-basica"><ModulePageWrapper><NominaReportes /></ModulePageWrapper></FeatureGuard> },
 
   { path: '/comercial-hub', component: <ModulePageWrapper><ComercialHub /></ModulePageWrapper> },
   { path: '/comercial-hub/embudo', component: <ModulePageWrapper><ComercialEmbudo /></ModulePageWrapper> },
@@ -166,6 +206,8 @@ const authProtectedRoutes = [
   { path: '/comercial-hub/cotizaciones', component: <ModulePageWrapper><ComercialCotizaciones /></ModulePageWrapper> },
   { path: '/comercial-hub/facturacion', component: <ModulePageWrapper><ComercialFacturacion /></ModulePageWrapper> },
   { path: '/comercial-hub/clientes', component: <ModulePageWrapper><ComercialClientes /></ModulePageWrapper> },
+  { path: '/comercial-hub/sitio', component: <FeatureGuard feature="site_builder"><ModulePageWrapper><ComercialSitioWeb /></ModulePageWrapper></FeatureGuard> },
+  { path: '/comercial-hub/chatbot-ia', component: <ModulePageWrapper><ComercialChatbotIA /></ModulePageWrapper> },
   { path: '/impuestos', component: <ModulePageWrapper><ImpuestosPage /></ModulePageWrapper> },
   { path: '/terceros', component: <ModulePageWrapper><TercerosPage /></ModulePageWrapper> },
   { path: '/cotizaciones', component: <ModulePageWrapper><CotizacionesPage /></ModulePageWrapper> },
@@ -186,10 +228,10 @@ const publicRoutes = [
   { path: '/', component: <LandingPage /> },
   { path: '/producto/contabilidad', component: <ContabilidadProductoPage /> },
   { path: '/logout', component: <Logout /> },
-  { path: '/login', component: <LoginRedirect /> },
-  { path: '/register', component: <RegisterRedirect /> },
-  { path: '/register-tenant', component: <RegisterRedirect /> },
-  { path: '/register-contador', component: <RegisterRedirect /> },
+  { path: '/login', component: <LoginPage /> },
+  { path: '/register', component: <LoginPage /> },
+  { path: '/register-tenant', component: <LoginPage /> },
+  { path: '/register-contador', component: <LoginPage /> },
   { path: '/forgot-password', component: <ForgotPassword /> },
   { path: '/reset-password', component: <ResetPassword /> },
   { path: '/auth-google-callback', component: <AuthGoogleCallback /> },

@@ -72,6 +72,14 @@ const crmRoutes = require('./routes/crmRoutes');
 // WhatsApp (Baileys)
 const whatsappRoutes = require('./routes/whatsappRoutes');
 
+// WhatsApp (Evolution API multi-instance)
+const evolutionRoutes = require('./routes/evolutionRoutes');
+
+// Billing (Stripe) y Superadmin
+const billingRoutes = require('./routes/billingRoutes');
+const billingController = require('./controllers/billingController');
+const superadminRoutes = require('./routes/superadminRoutes');
+
 // IA Contable (Automatización inteligente)
 const aiAccountingRoutes = require('./routes/aiAccountingRoutes');
 
@@ -153,6 +161,14 @@ app.set('io', waNamespace);
 /* =======================================
     🚀 MIDDLEWARES ESENCIALES
 ======================================= */
+// IMPORTANTE: el webhook de Stripe debe usar raw body para validar la firma.
+// Se monta ANTES de express.json() para que ese endpoint reciba el Buffer crudo.
+app.post(
+  '/api/billing/webhook',
+  express.raw({ type: 'application/json' }),
+  billingController.webhook,
+);
+
 app.use(express.json());
 
 
@@ -168,6 +184,38 @@ fs.mkdirSync(LOGOS_DIR, { recursive: true });
 fs.mkdirSync(XMLS_DIR, { recursive: true });
 
 app.use(express.static(PUBLIC_DIR));
+
+
+/* =======================================
+    🔒 GATE GLOBAL DE SUSCRIPCIÓN
+    Aplica authMiddleware + requireActiveSubscription a TODO /api/* salvo:
+    - /api/auth/*           (login, registro, OAuth, /me sin sub válida)
+    - /api/billing/*        (planes, checkout, portal — el usuario debe poder pagar sin sub activa)
+    - /api/whatsapp/evolution/webhook/*  (callback público desde Evolution)
+    - /api/health
+   Los routes individuales pueden seguir aplicando authMiddleware y requireFeature(...).
+======================================= */
+const globalAuthMiddleware = require('./middleware/authMiddleware');
+const { requireActiveSubscription: globalSubGate } = require('./middleware/subscriptionGate');
+
+const PUBLIC_API_PATTERNS = [
+  /^\/api\/auth(\/.*)?$/,
+  /^\/api\/billing(\/.*)?$/,
+  /^\/api\/whatsapp\/evolution\/webhook(\/.*)?$/,
+  /^\/api\/health$/,
+  // Tienda online generada por la IA: catálogo y pedidos sin auth, identificados por slug del subdomain.
+  // Cubre /api/public/sitios/* y /api/public/chatbot.js (widget embebible).
+  /^\/api\/public(\/.*)?$/,
+];
+
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api/')) return next();
+  if (PUBLIC_API_PATTERNS.some((re) => re.test(req.path))) return next();
+  globalAuthMiddleware(req, res, (err) => {
+    if (err) return next(err);
+    return globalSubGate(req, res, next);
+  });
+});
 
 
 /* =======================================
@@ -228,6 +276,17 @@ app.use('/api/accounting', require('./routes/libroOficialRoutes'));
 app.use('/api/accounting', require('./routes/pygFuncionRoutes'));
 app.use('/api/accounting/exogenous', require('./routes/exogenousRoutes'));
 app.use('/api/kardex', require('./routes/kardexRoutes'));
+app.use('/api/pos', require('./routes/posRoutes'));
+app.use('/api/sitios', require('./routes/sitiosRoutes'));
+// Endpoints públicos del ecommerce (sin auth; identifican tenant por subdomain del sitio).
+app.use('/api/public/sitios', require('./routes/sitiosPublicRoutes'));
+// Widget JS embebible del chatbot — servido bajo /api/* porque el proxy del VPS
+// rutea /api/* al backend; los .js sueltos en root caen en el SPA.
+app.get('/api/public/chatbot.js', (_req, res) => {
+  res.type('application/javascript');
+  res.setHeader('Cache-Control', 'public, max-age=300');
+  res.sendFile(path.resolve(__dirname, '..', 'public', 'chatbot.js'));
+});
 app.use('/api/fixed-assets', require('./routes/fixedAssetsRoutes'));
 app.use('/api/journal-templates', require('./routes/journalTemplatesRoutes'));
 
@@ -249,8 +308,23 @@ app.use('/api/crm', crmRoutes);
 // WhatsApp (Baileys + Socket.IO)
 app.use('/api/whatsapp', whatsappRoutes);
 
+// WhatsApp Evolution API (multi-instance, una por tenant)
+app.use('/api/whatsapp/evolution', evolutionRoutes);
+
+// Billing (Stripe) — el webhook se monta arriba con raw(); el resto va con json().
+app.use('/api/billing', billingRoutes);
+
+// Superadmin (rol 99): KPIs, gestión de tenants, pagos
+app.use('/api/superadmin', superadminRoutes);
+
 // IA Contable (Automatización inteligente)
 app.use('/api/ai-accounting', aiAccountingRoutes);
+
+// Chat de agentes IA del dashboard + créditos por plan
+app.use('/api/ai', require('./routes/aiRoutes'));
+
+// Credenciales BYOK de IA (Comercial → Chatbot IA) — OpenAI/Anthropic/Gemini
+app.use('/api/ai-credentials', require('./routes/aiCredentialsRoutes'));
 
 // Ruta específica para la subida del logo
 app.post('/api/tenants/:tenantId/logo', upload.single('logo'), uploadTenantLogo);
@@ -290,7 +364,16 @@ app.use((err, req, res, next) => {
     ▶️ INICIO DEL SERVIDOR
 ======================================= */
 // Ejecutar migraciones y luego iniciar servidor
-runMigrations().then(() => {
+runMigrations().then(async () => {
+  // Asegurar cupones de Stripe (FIRST_MONTH_50, ANUAL_10_OFF). Si Stripe no
+  // está configurado, hace no-op. No bloquea el arranque si falla.
+  try {
+    const stripeSvc = require('./services/stripeService');
+    await stripeSvc.ensurePromoCoupons();
+  } catch (e) {
+    console.warn('[startup] ensurePromoCoupons falló:', e.message);
+  }
+
   server.listen(PORT, () => {
     console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
     // Reconnect existing WhatsApp sessions
@@ -298,6 +381,13 @@ runMigrations().then(() => {
     whatsappService.reconnectSessions(waNamespace).catch(err => {
       console.error('[WhatsApp] Error reconnecting sessions:', err.message);
     });
+
+    // Bandeja DIAN: poller de buzones IMAP (Fase 2). Revisa correos cada 5 min.
+    try {
+      require('./services/dianImapPollerService').startPoller();
+    } catch (e) {
+      console.warn('[DIAN IMAP] poller no iniciado:', e.message);
+    }
   });
 }).catch(err => {
   console.error('❌ Error en migraciones:', err);
